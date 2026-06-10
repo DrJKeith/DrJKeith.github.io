@@ -1,2 +1,2 @@
-# julianrkeith.github.io
+# DrJKeith.github.io
 Website describing my activities and background

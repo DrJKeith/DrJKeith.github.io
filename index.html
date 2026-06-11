@@ -336,50 +336,24 @@
     font-size:.92rem;
   }
   .grant-list{
-    display:grid;
-    gap:12px;
-  }
-  .grant-group+.grant-group{margin-top:42px}
-  .grant-group h3{
-    color:var(--navy);
-    margin-bottom:16px;
-    font-size:1.35rem;
-  }
-  .grant-item{
-    background:var(--white);
-    border:1px solid var(--line);
-    border-left:5px solid var(--teal);
-    border-radius:var(--radius);
+    list-style:none;
+    margin:0;
     padding:0;
-    box-shadow:var(--shadow);
   }
-  .grant-item summary{
-    display:block;
-    padding:18px 22px;
+  .grant-list li{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
   }
-  .grant-meta{
-    display:grid;
-    grid-template-columns:minmax(160px,.9fr) minmax(120px,.7fr) minmax(90px,.35fr);
-    gap:12px;
-    color:var(--muted);
-    font-size:.94rem;
+  .grant-list li:last-child{border-bottom:none}
+  .grant-title{
+    margin:0 0 4px;
+    color:var(--ink);
+    font-size:1.05rem;
     font-weight:700;
   }
-  .grant-title{
-    margin:0 0 8px;
-    color:var(--ink);
-    font-size:1.08rem;
-    font-weight:800;
-  }
-  .grant-item p{
-    margin:0;
+  .grant-meta{
     color:var(--muted);
-  }
-  .grant-role{
-    margin-top:10px;
-    color:var(--ink);
-    font-weight:800;
-    text-transform:uppercase;
+    font-size:.94rem;
   }
 
   .course-list{
@@ -495,7 +469,6 @@
     h1{max-width:12ch}
     .hero-inner{padding-top:54px}
     .timeline li{grid-template-columns:1fr;gap:4px}
-    .grant-meta{grid-template-columns:1fr}
   }
 
   @media(prefers-reduced-motion:reduce){
@@ -653,119 +626,42 @@
   </section>
 
   <section id="grants">
-    <p class="section-label">Grant Support</p>
-    <h2>Grant support</h2>
+    <h2>Grant Support</h2>
 
-    <div class="grant-group">
-      <h3>Grant Support</h3>
-      <div class="grant-list">
-        <details class="grant-item">
-          <summary>
-            <div class="grant-title">A Placebo-Control Evaluation of Neurofeedback Efficacy in Adults with ADHD</div>
-            <div class="grant-meta">
-              <span>R15 AT007226-01</span>
-              <span>Keith (PI)</span>
-              <span>2012-2015</span>
-            </div>
-          </summary>
-          <p>The goal of this study is to evaluate the effectiveness of neurofeedback for symptoms of ADHD in adults.</p>
-          <p class="grant-role">Role: PI</p>
-        </details>
-      </div>
-    </div>
-
-    <div class="grant-group">
-      <h3>Completed Research Support</h3>
-      <div class="grant-list">
-        <details class="grant-item">
-          <summary>
-            <div class="grant-title">The Seahawk Brainwave and Attention Training Clinic</div>
-            <div class="grant-meta">
-              <span>Cape Fear Memorial Foundation Grant</span>
-              <span>Keith (PI)</span>
-              <span>2012-2014</span>
-            </div>
-          </summary>
-          <p>The goal of this project was to establish a clinic and research facility to treat ADHD symptoms in children using neurofeedback.</p>
-        </details>
-
-        <details class="grant-item">
-          <summary>
-            <div class="grant-title">A New Approach at Identifying Patterns of Cognitive Decline in Patients with Dementia of the Alzheimer's Type</div>
-            <div class="grant-meta">
-              <span>Alzheimer's North Carolina (AlzNC)</span>
-              <span>Keith (PI)</span>
-              <span>2012-2013</span>
-            </div>
-          </summary>
-          <p>The goal of this project was to develop a large database that included neuropsychological measures taken from patients at all stages of Alzheimer's disease.</p>
-        </details>
-
-        <details class="grant-item">
-          <summary>
-            <div class="grant-title">Proposal to obtain laser scanning confocal microscope</div>
-            <div class="grant-meta">
-              <span>NSF</span>
-              <span>Kinsey (PI)</span>
-              <span>2005</span>
-            </div>
-          </summary>
-          <p>The purpose of this project was to obtain imaging technology to study neurogenesis in the adult hippocampus.</p>
-          <p class="grant-role">Role: Co-I</p>
-        </details>
-
-        <details class="grant-item">
-          <summary>
-            <div class="grant-title">Functional Aspects of Adult Hippocampal Neurogenesis</div>
-            <div class="grant-meta">
-              <span>R01 MH067156</span>
-              <span>Keith (PI)</span>
-              <span>2003-2008</span>
-            </div>
-          </summary>
-          <p>The purpose of this project was to test hypotheses regarding the functional roles of new neurons added to the hippocampus during adulthood.</p>
-        </details>
-
-        <details class="grant-item">
-          <summary>
-            <div class="grant-title">Stimulating Plastic Processes to Facilitate Functional Restitution after Cortical Stroke</div>
-            <div class="grant-meta">
-              <span>Canadian Stroke Network</span>
-              <span>Sutherland (PI)</span>
-              <span>2003-2005</span>
-            </div>
-          </summary>
-          <p>The purpose of this project was to develop methods to promote recovery of function after brain injury.</p>
-          <p class="grant-role">Role: Co-I</p>
-        </details>
-
-        <details class="grant-item">
-          <summary>
-            <div class="grant-title">Drugs of Abuse and Complex Behavior</div>
-            <div class="grant-meta">
-              <span>R15</span>
-              <span>Galizio (PI)</span>
-              <span>2000-2003</span>
-            </div>
-          </summary>
-          <p>The purpose of this project was to develop new methods for assessing drug effects on behavior.</p>
-          <p class="grant-role">Role: Co-I</p>
-        </details>
-
-        <details class="grant-item">
-          <summary>
-            <div class="grant-title">CPB Effects on Neuropsychological Performance</div>
-            <div class="grant-meta">
-              <span>R15</span>
-              <span>Keith (PI)</span>
-              <span>1996-1999</span>
-            </div>
-          </summary>
-          <p>The purpose of this project was to determine if cardiopulmonary bypass surgery caused persistent cognitive impairment.</p>
-          <p class="grant-role">Role: PI</p>
-        </details>
-      </div>
-    </div>
+    <ul class="grant-list">
+      <li>
+        <p class="grant-title">A Placebo-Control Evaluation of Neurofeedback Efficacy in Adults with ADHD</p>
+        <p class="grant-meta">NIH R15 AT007226-01 &middot; Keith (PI) &middot; 2012&ndash;2015</p>
+      </li>
+      <li>
+        <p class="grant-title">The Seahawk Brainwave and Attention Training Clinic</p>
+        <p class="grant-meta">Cape Fear Memorial Foundation Grant &middot; Keith (PI) &middot; 2012&ndash;2014</p>
+      </li>
+      <li>
+        <p class="grant-title">A New Approach at Identifying Patterns of Cognitive Decline in Patients with Dementia of the Alzheimer&rsquo;s Type</p>
+        <p class="grant-meta">Alzheimer&rsquo;s North Carolina (AlzNC) &middot; Keith (PI) &middot; 2012&ndash;2013</p>
+      </li>
+      <li>
+        <p class="grant-title">Proposal to obtain laser scanning confocal microscope</p>
+        <p class="grant-meta">NSF &middot; Kinsey (PI), Keith (Co-I) &middot; 2005</p>
+      </li>
+      <li>
+        <p class="grant-title">Functional Aspects of Adult Hippocampal Neurogenesis</p>
+        <p class="grant-meta">NIH R01 MH067156 &middot; Keith (PI) &middot; 2003&ndash;2008</p>
+      </li>
+      <li>
+        <p class="grant-title">Stimulating Plastic Processes to Facilitate Functional Restitution after Cortical Stroke</p>
+        <p class="grant-meta">Canadian Stroke Network &middot; Sutherland (PI), Keith (Co-I) &middot; 2003&ndash;2005</p>
+      </li>
+      <li>
+        <p class="grant-title">Drugs of Abuse and Complex Behavior</p>
+        <p class="grant-meta">NIH R15 &middot; Galizio (PI), Keith (Co-I) &middot; 2000&ndash;2003</p>
+      </li>
+      <li>
+        <p class="grant-title">CPB Effects on Neuropsychological Performance</p>
+        <p class="grant-meta">NIH R15 &middot; Keith (PI) &middot; 1996&ndash;1999</p>
+      </li>
+    </ul>
   </section>
 
   <section class="band" id="teaching">

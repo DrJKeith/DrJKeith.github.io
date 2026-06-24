@@ -367,6 +367,30 @@
     margin:0;
     padding:0;
   }
+  .grant-toggle{
+    background:transparent;
+    border:0;
+    border-radius:0;
+    margin:0;
+  }
+  .grant-toggle summary{
+    padding:0;
+    color:var(--navy);
+  }
+  .grant-summary-heading{
+    display:inline;
+    margin:0;
+    font-size:clamp(1.8rem,3.6vw,2.55rem);
+    font-weight:700;
+    line-height:1.15;
+    letter-spacing:0;
+  }
+  .grant-toggle .grant-list{
+    margin-top:24px;
+  }
+  .grant-toggle p{
+    padding:0;
+  }
   .grant-list li{
     padding:16px 0;
     border-bottom:1px solid var(--line);
@@ -658,42 +682,44 @@
   </section>
 
   <section id="grants">
-    <h2>Grant Support</h2>
+    <details class="grant-toggle">
+      <summary><span class="grant-summary-heading" role="heading" aria-level="2">Grant Support (click to see)</span></summary>
 
-    <ul class="grant-list">
-      <li>
-        <p class="grant-title">A Placebo-Control Evaluation of Neurofeedback Efficacy in Adults with ADHD</p>
-        <p class="grant-meta">NIH R15 AT007226-01 &middot; Keith (PI) &middot; 2012&ndash;2015</p>
-      </li>
-      <li>
-        <p class="grant-title">The Seahawk Brainwave and Attention Training Clinic</p>
-        <p class="grant-meta">Cape Fear Memorial Foundation Grant &middot; Keith (PI) &middot; 2012&ndash;2014</p>
-      </li>
-      <li>
-        <p class="grant-title">A New Approach at Identifying Patterns of Cognitive Decline in Patients with Dementia of the Alzheimer&rsquo;s Type</p>
-        <p class="grant-meta">Alzheimer&rsquo;s North Carolina (AlzNC) &middot; Keith (PI) &middot; 2012&ndash;2013</p>
-      </li>
-      <li>
-        <p class="grant-title">Proposal to obtain laser scanning confocal microscope</p>
-        <p class="grant-meta">NSF &middot; Kinsey (PI), Keith (Co-I) &middot; 2005</p>
-      </li>
-      <li>
-        <p class="grant-title">Functional Aspects of Adult Hippocampal Neurogenesis</p>
-        <p class="grant-meta">NIH R01 MH067156 &middot; Keith (PI) &middot; 2003&ndash;2008</p>
-      </li>
-      <li>
-        <p class="grant-title">Stimulating Plastic Processes to Facilitate Functional Restitution after Cortical Stroke</p>
-        <p class="grant-meta">Canadian Stroke Network &middot; Sutherland (PI), Keith (Co-I) &middot; 2003&ndash;2005</p>
-      </li>
-      <li>
-        <p class="grant-title">Drugs of Abuse and Complex Behavior</p>
-        <p class="grant-meta">NIH R15 &middot; Galizio (PI), Keith (Co-I) &middot; 2000&ndash;2003</p>
-      </li>
-      <li>
-        <p class="grant-title">CPB Effects on Neuropsychological Performance</p>
-        <p class="grant-meta">NIH R15 &middot; Keith (PI) &middot; 1996&ndash;1999</p>
-      </li>
-    </ul>
+      <ul class="grant-list">
+        <li>
+          <p class="grant-title">A Placebo-Control Evaluation of Neurofeedback Efficacy in Adults with ADHD</p>
+          <p class="grant-meta">NIH R15 AT007226-01 &middot; Keith (PI) &middot; 2012&ndash;2015</p>
+        </li>
+        <li>
+          <p class="grant-title">The Seahawk Brainwave and Attention Training Clinic</p>
+          <p class="grant-meta">Cape Fear Memorial Foundation Grant &middot; Keith (PI) &middot; 2012&ndash;2014</p>
+        </li>
+        <li>
+          <p class="grant-title">A New Approach at Identifying Patterns of Cognitive Decline in Patients with Dementia of the Alzheimer&rsquo;s Type</p>
+          <p class="grant-meta">Alzheimer&rsquo;s North Carolina (AlzNC) &middot; Keith (PI) &middot; 2012&ndash;2013</p>
+        </li>
+        <li>
+          <p class="grant-title">Proposal to obtain laser scanning confocal microscope</p>
+          <p class="grant-meta">NSF &middot; Kinsey (PI), Keith (Co-I) &middot; 2005</p>
+        </li>
+        <li>
+          <p class="grant-title">Functional Aspects of Adult Hippocampal Neurogenesis</p>
+          <p class="grant-meta">NIH R01 MH067156 &middot; Keith (PI) &middot; 2003&ndash;2008</p>
+        </li>
+        <li>
+          <p class="grant-title">Stimulating Plastic Processes to Facilitate Functional Restitution after Cortical Stroke</p>
+          <p class="grant-meta">Canadian Stroke Network &middot; Sutherland (PI), Keith (Co-I) &middot; 2003&ndash;2005</p>
+        </li>
+        <li>
+          <p class="grant-title">Drugs of Abuse and Complex Behavior</p>
+          <p class="grant-meta">NIH R15 &middot; Galizio (PI), Keith (Co-I) &middot; 2000&ndash;2003</p>
+        </li>
+        <li>
+          <p class="grant-title">CPB Effects on Neuropsychological Performance</p>
+          <p class="grant-meta">NIH R15 &middot; Keith (PI) &middot; 1996&ndash;1999</p>
+        </li>
+      </ul>
+    </details>
   </section>
 
   <section class="band" id="teaching">
@@ -877,5 +903,15 @@
     </div>
   </div>
 </footer>
+<script>
+  const closeGrantSupport = () => {
+    document.querySelectorAll('.grant-toggle').forEach((details) => {
+      details.open = false;
+    });
+  };
+
+  closeGrantSupport();
+  window.addEventListener('pageshow', closeGrantSupport);
+</script>
 </body>
 </html>

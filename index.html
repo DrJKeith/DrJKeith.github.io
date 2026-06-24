@@ -257,6 +257,25 @@
   }
   .body-copy p{margin:0}
   .body-copy p+p{margin-top:16px}
+  .profile-aside{
+    display:grid;
+    gap:18px;
+  }
+  .portrait-figure{
+    margin:0;
+    width:min(100%,340px);
+  }
+  .profile-portrait{
+    display:block;
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    object-position:center;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--lighter);
+    box-shadow:var(--shadow);
+  }
   .callout{
     border-top:5px solid var(--teal);
     background:var(--lighter);
@@ -553,15 +572,20 @@
         <p>My earlier research examined neuroplasticity, hippocampal neurogenesis, memory, cardiac surgery and cognition, neurofeedback, addiction recovery, and concussion assessment technology. My current work focuses on AI in higher education and the cognitive science of artificial systems.</p>
         <p>After seven years chairing the Department of Psychology, I returned to faculty work with new questions about cognition, learning, and human-AI collaboration.</p>
       </div>
-      <aside class="callout" aria-label="Professional highlights">
-        <h3>Professional Highlights</h3>
-        <ul>
-          <li>UNCW faculty member since 1990</li>
-          <li>Former Chair, Department of Psychology</li>
-          <li>NIMH R01-supported research on adult hippocampal neurogenesis</li>
-          <li>UNCW Distinguished Teaching Professorship, 2015</li>
-          <li>Board of Trustees Teaching Excellence Award, 2015</li>
-        </ul>
+      <aside class="profile-aside" aria-label="Profile and professional highlights">
+        <figure class="portrait-figure">
+          <img class="profile-portrait" src="julian-keith-portrait.png" alt="Portrait of Julian R. Keith">
+        </figure>
+        <div class="callout" aria-label="Professional highlights">
+          <h3>Professional Highlights</h3>
+          <ul>
+            <li>UNCW faculty member since 1990</li>
+            <li>Former Chair, Department of Psychology</li>
+            <li>NIMH R01-supported research on adult hippocampal neurogenesis</li>
+            <li>UNCW Distinguished Teaching Professorship, 2015</li>
+            <li>Board of Trustees Teaching Excellence Award, 2015</li>
+          </ul>
+        </div>
       </aside>
     </div>
   </section>

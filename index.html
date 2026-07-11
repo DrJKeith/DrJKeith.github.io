@@ -146,11 +146,12 @@
   }
   h1{
     margin:0;
-    max-width:13ch;
-    font-size:clamp(2.6rem,6vw,4.7rem);
+    max-width:22ch;
+    font-size:clamp(2.1rem,4vw,3.35rem);
     line-height:1.02;
     letter-spacing:0;
   }
+  .nowrap{white-space:nowrap}
   .hero-logo{
     display:block;
     width:min(100%,240px);
@@ -527,7 +528,7 @@
       flex-wrap:wrap;
       padding-bottom:4px;
     }
-    h1{max-width:12ch}
+    h1{max-width:20ch}
     .hero-inner{padding-top:54px}
     .timeline li{grid-template-columns:1fr;gap:4px}
   }
@@ -576,7 +577,7 @@
   <div class="hero-inner">
     <div>
       <p class="kicker">University of North Carolina Wilmington</p>
-      <h1>Julian R. Keith, Ph.D.</h1>
+      <h1>Julian R. Keith, <span class="nowrap">Ph.D.</span></h1>
       <p class="lede">Professor of Psychology at UNC Wilmington connecting cognitive science, teaching, and responsible AI tool-building for higher education.</p>
       <div class="hero-actions" aria-label="Key links">
         <a class="btn btn-primary" href="https://uncw.edu/profiles/k/keithj" target="_blank" rel="noopener">UNCW Profile</a>

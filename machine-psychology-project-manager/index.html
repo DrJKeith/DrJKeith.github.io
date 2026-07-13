@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Psychology · Year 1 Project Manager</title>
+<style>
+  :root{
+    --navy:#16324F; --ink:#1a1a2e; --paper:#f7f6f2; --card:#ffffff;
+    --line:#e3e0d8; --accent:#B45309; --green:#1a7f4e; --red:#B00020;
+    --amber:#B45309; --gray:#6b7280; --blue:#2563eb;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:Georgia,'Times New Roman',serif; background:var(--paper); color:var(--ink); font-size:15px; line-height:1.5;}
+  header{background:var(--navy); color:#fff; padding:18px 28px;}
+  header h1{font-size:20px; letter-spacing:.5px;}
+  header .sub{font-size:13px; opacity:.85; margin-top:2px; font-style:italic;}
+  nav{display:flex; gap:2px; background:var(--navy); padding:0 20px; flex-wrap:wrap;}
+  nav button{font-family:inherit; font-size:14px; padding:9px 16px; border:none; background:transparent; color:#cbd5e1; cursor:pointer; border-radius:6px 6px 0 0;}
+  nav button.active{background:var(--paper); color:var(--ink); font-weight:bold;}
+  nav button:hover:not(.active){background:rgba(255,255,255,.1); color:#fff;}
+  main{max-width:1100px; margin:0 auto; padding:24px 20px 80px;}
+  .view{display:none;} .view.active{display:block;}
+  h2{font-size:19px; color:var(--navy); margin:22px 0 10px; border-bottom:2px solid var(--navy); padding-bottom:4px;}
+  h3{font-size:16px; color:var(--navy); margin:16px 0 8px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:14px;}
+  .grid{display:grid; gap:14px;}
+  .grid.c2{grid-template-columns:1fr 1fr;} .grid.c3{grid-template-columns:1fr 1fr 1fr;} .grid.c4{grid-template-columns:repeat(4,1fr);}
+  @media(max-width:800px){.grid.c2,.grid.c3,.grid.c4{grid-template-columns:1fr;}}
+  .kpi{text-align:center; padding:14px 8px;}
+  .kpi .num{font-size:28px; font-weight:bold; color:var(--navy);}
+  .kpi .lbl{font-size:12px; color:var(--gray); margin-top:2px;}
+  .bar{height:10px; background:#e9e6de; border-radius:5px; overflow:hidden; margin-top:6px;}
+  .bar>div{height:100%; background:var(--navy); border-radius:5px; transition:width .3s;}
+  .bar.green>div{background:var(--green);}
+  .chip{display:inline-block; font-size:11px; padding:2px 9px; border-radius:10px; font-weight:bold; letter-spacing:.3px;}
+  .chip.todo{background:#e5e7eb; color:#374151;}
+  .chip.progress{background:#dbeafe; color:#1e40af;}
+  .chip.done{background:#d1fae5; color:#065f46;}
+  .chip.blocked{background:#fee2e2; color:#991b1b;}
+  .chip.pass{background:#d1fae5; color:#065f46;}
+  .chip.fail{background:#fee2e2; color:#991b1b;}
+  .chip.pending{background:#fef3c7; color:#92400e;}
+  .chip.milestone{background:#ede9fe; color:#5b21b6;}
+  .chip.gate{background:#fef3c7; color:#92400e;}
+  .chip.dormant{background:#e5e7eb; color:#374151;}
+  .chip.triggered{background:#fee2e2; color:#991b1b;}
+  .chip.resolved{background:#d1fae5; color:#065f46;}
+  .task{display:flex; align-items:flex-start; gap:10px; padding:9px 6px; border-bottom:1px solid var(--line);}
+  .task:last-child{border-bottom:none;}
+  .task.done-task .t-title{text-decoration:line-through; color:var(--gray);}
+  .task select{font-family:inherit; font-size:12px; padding:2px 4px; border:1px solid var(--line); border-radius:4px; background:#fff;}
+  .t-body{flex:1;}
+  .t-title{font-weight:bold; font-size:14px;}
+  .t-meta{font-size:12px; color:var(--gray); margin-top:1px;}
+  .t-detail{font-size:13px; color:#44403c; margin-top:3px; display:none;}
+  .task.open .t-detail{display:block;}
+  .t-toggle{cursor:pointer; user-select:none; color:var(--blue); font-size:12px;}
+  .phasehead{display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none;}
+  .phasehead .pct{font-size:13px; color:var(--gray);}
+  table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  th{background:var(--navy); color:#fff; text-align:left; padding:7px 9px; font-size:12.5px;}
+  td{padding:7px 9px; border-bottom:1px solid var(--line); vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  input[type=number], input[type=text]{font-family:inherit; font-size:13.5px; padding:4px 7px; border:1px solid var(--line); border-radius:4px; width:110px; background:#fffdf8;}
+  .gantt{display:grid; grid-template-columns:150px repeat(12,1fr); gap:2px; font-size:11px; align-items:center;}
+  .gantt .glabel{font-weight:bold; font-size:12px; padding-right:6px;}
+  .gantt .gmonth{text-align:center; color:var(--gray); padding-bottom:4px;}
+  .gantt .gcell{height:22px; background:#efece4; border-radius:3px; position:relative;}
+  .gantt .gcell.on{background:var(--navy); opacity:.85;}
+  .gantt .gcell.on.p1{background:#475569;} .gantt .gcell.on.p2{background:#16324F;}
+  .gantt .gcell.on.p3{background:#B45309;} .gantt .gcell.on.p4{background:#1a7f4e;}
+  .gantt .gcell.on.p5{background:#5b21b6;} .gantt .gcell.on.p6{background:#B00020;}
+  .gantt .gcell.today::after{content:''; position:absolute; top:-3px; bottom:-3px; left:var(--tx,50%); width:2px; background:var(--red);}
+  .btnrow{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;}
+  button.act{font-family:inherit; font-size:13px; padding:7px 14px; border:1px solid var(--navy); background:#fff; color:var(--navy); border-radius:6px; cursor:pointer;}
+  button.act:hover{background:var(--navy); color:#fff;}
+  button.act.warn{border-color:var(--red); color:var(--red);}
+  button.act.warn:hover{background:var(--red); color:#fff;}
+  .note{font-size:12.5px; color:var(--gray); font-style:italic;}
+  .rubricline{display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+  .rubricline:last-child{border-bottom:none;}
+  .rubricline .rl-name{flex:1; min-width:220px; font-size:14px;}
+  .decision{padding:12px 16px; border-radius:8px; font-size:14px; margin-top:12px; border:1px solid var(--line);}
+  .decision.ok{background:#ecfdf5; border-color:#a7f3d0;}
+  .decision.warn{background:#fffbeb; border-color:#fde68a;}
+  .decision.bad{background:#fef2f2; border-color:#fecaca;}
+  textarea{width:100%; font-family:inherit; font-size:13.5px; border:1px solid var(--line); border-radius:6px; padding:8px; min-height:70px; background:#fffdf8;}
+  .duewarn{color:var(--red); font-weight:bold;}
+  .filters{display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;}
+  .filters select{font-family:inherit; font-size:13px; padding:5px 8px; border:1px solid var(--line); border-radius:6px; background:#fff;}
+  footer{text-align:center; font-size:12px; color:var(--gray); padding:20px; border-top:1px solid var(--line); margin-top:30px;}
+  @media print{nav,.btnrow,.filters{display:none;} .view{display:block !important;} body{background:#fff;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>MACHINE PSYCHOLOGY · Year 1 Project Manager</h1>
+  <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · built from Research Plan v4</div>
+</header>
+<nav id="nav"></nav>
+<main>
+
+<!-- ================= DASHBOARD ================= -->
+<div class="view" id="view-dashboard">
+  <div class="grid c4" style="margin-top:6px;">
+    <div class="card kpi"><div class="num" id="kpi-progress">–</div><div class="lbl">OVERALL TASKS DONE</div><div class="bar green"><div id="kpi-progress-bar" style="width:0%"></div></div></div>
+    <div class="card kpi"><div class="num" id="kpi-phase">–</div><div class="lbl">CURRENT PHASE (BY DATE)</div></div>
+    <div class="card kpi"><div class="num" id="kpi-gates">–</div><div class="lbl">GATES PASSED</div></div>
+    <div class="card kpi"><div class="num" id="kpi-budget">–</div><div class="lbl">DIRECT BUDGET REMAINING</div></div>
+  </div>
+
+  <h2>Phase Timeline</h2>
+  <div class="card"><div class="gantt" id="gantt"></div>
+  <div class="note" style="margin-top:8px;">Red line = today. Phases overlap by design (e.g., Study 0 manuscript drafting overlaps Study 1 prep).</div></div>
+
+  <h2>Phase Progress</h2>
+  <div class="card" id="phasebars"></div>
+
+  <div class="grid c2">
+    <div>
+      <h2>Needs Attention</h2>
+      <div class="card" id="attention"></div>
+    </div>
+    <div>
+      <h2>API Call Counters</h2>
+      <div class="card" id="counters"></div>
+    </div>
+  </div>
+
+  <h2>The Critical Path</h2>
+  <div class="card">
+    <div style="font-size:13.5px;">
+      Preregister Study 0 <b>→</b> freeze model list <b>→</b> run Study 0 <b>→</b> <span style="color:var(--amber);font-weight:bold;">pass acceptance rubric (Gate 3)</span> <b>→</b> pilots <b>→</b> preregister Study 1 <b>→</b> generate items <i>after</i> filing <b>→</b> collect Track A + B <b>→</b> confirmatory analyses <b>→</b> two manuscripts + OSF release.
+      <div class="note" style="margin-top:6px;">Everything downstream of Gate 3 is conditional. If the rubric returns 3/4, the 30-day remediation window starts immediately and Study 1 prep continues in parallel only where it does not depend on the failing layer.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TASKS ================= -->
+<div class="view" id="view-tasks">
+  <div class="filters">
+    <select id="f-status"><option value="">All statuses</option><option value="todo">To do</option><option value="progress">In progress</option><option value="done">Done</option><option value="blocked">Blocked</option></select>
+    <select id="f-owner"><option value="">All owners</option><option value="JK">JK (Julian)</option><option value="GK">GK (Gabriel)</option><option value="JK+GK">JK+GK</option></select>
+    <span class="note" style="align-self:center;">Click a phase header to collapse; click "details" on any task for its acceptance criteria.</span>
+  </div>
+  <div id="tasklist"></div>
+</div>
+
+<!-- ================= GATES ================= -->
+<div class="view" id="view-gates">
+  <h2>Decision Gates</h2>
+  <p class="note">Gates are the points where the project changes course based on evidence. Gate 3 computes its own verdict from the numbers you enter.</p>
+  <div id="gatelist"></div>
+
+  <h2>Gate 3 · Study 0 Acceptance Rubric (auto-evaluated)</h2>
+  <div class="card">
+    <div class="rubricline"><div class="rl-name"><b>Layer A</b> · parser/scorer accuracy on 500 synthetic tests</div>
+      <span>measured: <input type="number" step="0.1" min="0" max="100" id="rub-A" placeholder="e.g. 98.6"> %</span>
+      <span class="note">threshold ≥ 98%</span><span id="rub-A-chip" class="chip pending">PENDING</span></div>
+    <div class="rubricline"><div class="rl-name"><b>Layer B</b> · lowest human–AutoPsych agreement across primary fields (κ / ICC)</div>
+      <span>measured: <input type="number" step="0.01" min="0" max="1" id="rub-B" placeholder="e.g. 0.93"></span>
+      <span class="note">threshold ≥ .90</span><span id="rub-B-chip" class="chip pending">PENDING</span></div>
+    <div class="rubricline"><div class="rl-name"><b>Layer C</b> · benchmark phenomena directionally replicated (two-sided, CI excludes 0)</div>
+      <span>measured: <input type="number" step="1" min="0" max="3" id="rub-C" placeholder="0–3"> of 3</span>
+      <span class="note">threshold ≥ 2 of 3</span><span id="rub-C-chip" class="chip pending">PENDING</span></div>
+    <div class="rubricline"><div class="rl-name"><b>Layer D</b> · run-level completeness (complete records / intended calls)</div>
+      <span>measured: <input type="number" step="0.1" min="0" max="100" id="rub-D" placeholder="e.g. 99.4"> %</span>
+      <span class="note">threshold ≥ 99%</span><span id="rub-D-chip" class="chip pending">PENDING</span></div>
+    <div class="decision" id="rub-decision">Enter measured values above; the preregistered decision rule will be applied automatically.</div>
+  </div>
+</div>
+
+<!-- ================= BUDGET ================= -->
+<div class="view" id="view-budget">
+  <h2>Budget Tracker</h2>
+  <p class="note">Budgeted figures are from the v4 plan (verified June 2026 batch rates). Enter actual spend as invoices land; re-verify all API rates immediately before launch (OpenAI batch rate especially).</p>
+  <div class="card"><table id="budgettable"></table></div>
+  <div class="grid c3">
+    <div class="card kpi"><div class="num" id="b-spent">–</div><div class="lbl">SPENT</div></div>
+    <div class="card kpi"><div class="num" id="b-remaining">–</div><div class="lbl">REMAINING (OF $850 DIRECT)</div></div>
+    <div class="card kpi"><div class="num">$1,000</div><div class="lbl">YEAR 2 RESERVE (UNTOUCHED)</div></div>
+  </div>
+  <div class="card"><b>Standing reminders</b>
+    <div style="font-size:13.5px; margin-top:6px;">Reasoning-class models (GPT-5.4) may bill internal reasoning tokens as output tokens: keep reasoning effort pinned to minimum and watch the per-call output token counts in the logs. The contingency line covers up to a threefold output-token overrun on the two OpenAI models. Anthropic and Google batch discounts (~50%) were verified; Together.ai has no batch discount.</div></div>
+</div>
+
+<!-- ================= RISKS ================= -->
+<div class="view" id="view-risks">
+  <h2>Risk Register (Plan §7)</h2>
+  <p class="note">Set a risk to Triggered the day its trigger condition is observed; the preregistered response is the contract you already made with yourself.</p>
+  <div id="risklist"></div>
+</div>
+
+<!-- ================= NOTES / DATA ================= -->
+<div class="view" id="view-data">
+  <h2>Project Log</h2>
+  <div class="card">
+    <textarea id="notes" placeholder="Decisions, deviations from preregistration (must also be flagged on OSF), model version strings observed, sentinel results..."></textarea>
+    <div class="note" style="margin-top:6px;">Saved automatically. Any deviation from a preregistered plan noted here must also be disclosed in the OSF record and manuscripts (TOP Level 2 commitment).</div>
+  </div>
+  <h2>Save / Share State</h2>
+  <div class="card">
+    <div class="btnrow">
+      <button class="act" onclick="exportState()">Export progress (JSON)</button>
+      <button class="act" onclick="document.getElementById('importfile').click()">Import progress</button>
+      <input type="file" id="importfile" accept=".json" style="display:none" onchange="importState(this)">
+      <button class="act" onclick="window.print()">Print status report</button>
+      <button class="act warn" onclick="resetState()">Reset all progress</button>
+    </div>
+    <div class="note">Progress lives in this browser (localStorage). To sync with Gabriel: export, send the JSON, he imports. The HTML file itself never changes.</div>
+  </div>
+  <h2>Key Numbers (from v4, for quick reference)</h2>
+  <div class="card"><table>
+    <tr><th>Quantity</th><th>Value</th></tr>
+    <tr><td>Study 0 calls</td><td>9,000 (500 per model per rep × 6 × 3)</td></tr>
+    <tr><td>Track A calls</td><td>20,160 (1,120 per model per rep × 6 × 3)</td></tr>
+    <tr><td>Track B calls</td><td>4,320 (80 items × 3 formats × 6 × 3; 240 trials/cell)</td></tr>
+    <tr><td>Final item target</td><td>160–170 (from 250 candidates; 15–25% exclusions)</td></tr>
+    <tr><td>Track B accuracy band</td><td>55–92% (cells outside = non-estimable, reported as findings)</td></tr>
+    <tr><td>AUROC2 bands</td><td>H1: CI upper &lt; 0.55 · weak: [0.55, 0.70) · strong H2: ≥ 0.70, CI lower &gt; 0.55</td></tr>
+    <tr><td>Decoding</td><td>T = 0.7 (Anthropic, Google, Together) · reasoning effort minimum, logged (OpenAI)</td></tr>
+    <tr><td>Parse-failure ceiling</td><td>15% per cell → human-coded subsample, else exclude and note</td></tr>
+    <tr><td>Multiplicity</td><td>BH-FDR q = .05 within each confirmatory family</td></tr>
+  </table></div>
+</div>
+
+</main>
+<footer>Machine Psychology Year 1 · self-contained tool · no data leaves this browser</footer>
+
+<script>
+"use strict";
+/* ============ PROJECT DATA (from Research Plan v4) ============ */
+const MONTHS = ["Jul 26","Aug 26","Sep 26","Oct 26","Nov 26","Dec 26","Jan 27","Feb 27","Mar 27","Apr 27","May 27","Jun 27"];
+const PROJECT_START = new Date(2026,6,1), PROJECT_END = new Date(2027,5,30);
+
+const PHASES = [
+ {id:"prep", name:"Preparation", m:[1,2], cls:"p1", tasks:[
+  {id:"P1", t:"Build AutoPsych core pipeline", o:"GK", due:2, d:"Orchestration, batch submission, and the Layer D logging schema: model version string, timestamp, prompt hash, full response text, parsed values, scores, API status, and seed/system fingerprint where exposed. Done = a dry run writes complete records for 100% of mock calls."},
+  {id:"P2", t:"Build parser + scorer modules", o:"GK", due:2, d:"Numeric extraction across formats (integers, decimals, scientific notation), unit conversion, refusal routing, and flagging of impossible confidences (<0, >100) and inverted intervals. Done = passes code review against the preregistered handling rules."},
+  {id:"P3", t:"Create synthetic unit test library (500 items)", o:"GK", due:2, d:"Known ground-truth responses including malformed JSON, missing fields, nonnumeric text, impossible values, refusals, and adversarial formatting (Unicode, embedded instructions, whitespace). This library ships in the Study 0 preregistration."},
+  {id:"P4", t:"Generate 250 candidate Fermi items + metadata sheets", o:"JK", due:2, d:"Every item: unique supplied parameters PLUS at least one bridge quantity estimated from world knowledge (items fully determined by supplied inputs are excluded as arithmetic). Metadata: domain, formula, bridge quantities with documented reference ranges and sources, ground-truth point + plausible interval, log uncertainty width. Exclusion: researcher ground-truth disagreement > 0.5 log units."},
+  {id:"P5", t:"Contamination-risk scoring of all candidates", o:"JK", due:2, d:"Exact-match Google + Bing searches per stem; exclude/redesign items whose top-3 results return the answer; screen canonical templates (piano tuners etc.); assign Low/Medium/High rating to every retained item. Remember: search is a proxy, parameterization is the real defense."},
+  {id:"P6", t:"Draft Study 0 preregistration", o:"JK", due:2, d:"Full acceptance rubric with thresholds, all prompt templates, model version strings, per-provider decoding policy, the 500-item synthetic library, and all scoring procedures. Study 0 items are included verbatim (they are not contamination-sensitive)."},
+  {id:"P7", t:"File Study 0 preregistration on OSF", o:"JK", due:2, ms:true, d:"Gate 2. No Study 0 API calls before the timestamp."},
+  {id:"P8", t:"Freeze model list (Gate 1)", o:"JK+GK", due:2, gate:true, d:"Two weeks before Study 0 data collection. Re-evaluate the open-weight entry against current releases under the preregistered criterion: most widely deployed open-weight instruct model with stable hosted inference. Keep one small + one capable model per proprietary family."},
+  {id:"P9", t:"Re-verify API pricing and batch rates", o:"GK", due:2, d:"Confirm OpenAI batch discount rate (changes without notice), Anthropic/Google ~50% batch rates, Together.ai standard rates. Update the budget view if anything moved."},
+ ]},
+ {id:"study0", name:"Study 0", m:[2,4], cls:"p2", tasks:[
+  {id:"S1", t:"Layer A: run synthetic unit tests", o:"GK", due:3, d:"Parser against the 500-item library BEFORE any real API call. Threshold ≥ 98%. Enter the result in the Gates tab."},
+  {id:"S2", t:"Layer C: benchmark replication runs (9,000 calls)", o:"GK", due:3, d:"500 calls per model per rep: 100 anchoring items × both anchors (within-item), 100 framing items × both frames (within-item), 100 confidence items. Six models, three reps. Batch API where available."},
+  {id:"S3", t:"Layer B: human coding of 15% subsample", o:"JK+GK", due:4, d:"Two coders, blind to AutoPsych output, on primary fields. Coder–coder κ/ICC(2,1) ≥ .90; then AutoPsych–human agreement on the same subsample. If AutoPsych trails coders by > 5 points on any field: revise that scorer and re-validate before Study 1."},
+  {id:"S4", t:"Layer D: completeness audit", o:"GK", due:4, d:"≥ 99% of intended calls produce complete records. Report parse-failure and refusal rates as platform diagnostics."},
+  {id:"S5", t:"Layer C analysis: directional tests", o:"JK", due:4, d:"Two-sided α = .05 throughout; replication = predicted direction AND 95% CI excludes zero. Anchoring: mixed model, item random intercepts, ≥ 4/6 families. Framing: logistic mixed model. Confidence–accuracy: overconfidence in ≥ 5/6 families. Heterogeneity: REML + Hartung-Knapp (not DL at k=6); τ²/I² descriptive only."},
+  {id:"S6", t:"GATE 3: validation decision vs. acceptance rubric", o:"JK+GK", due:4, gate:true, d:"Use the auto-evaluated rubric in the Gates tab. 4/4 = proceed. 3/4 = diagnose and remediate the failing layer within the 30-day window. ≤ 2/4 = full pipeline audit; write up Study 0 as a diagnostic contribution."},
+  {id:"S7", t:"(Conditional) 30-day remediation window", o:"JK+GK", due:5, d:"Only if the rubric returns 3/4. Diagnose the failing criterion, fix, re-run the affected layer, re-enter values in the Gates tab."},
+  {id:"S8", t:"Draft Study 0 manuscript", o:"JK", due:4, d:"Target: Behavior Research Methods. The item-secrecy preregistration mechanism deserves prominent treatment; it is a methods contribution in its own right."},
+ ]},
+ {id:"s1prep", name:"Study 1 Prep", m:[4,5], cls:"p3", tasks:[
+  {id:"Q1", t:"Difficulty calibration pilot (250 items × 2 models)", o:"GK", due:5, d:"One large + one small family, standard condition. Outcomes: per-item parse-failure rate, mean log error, within-domain variance. Exclude: parse failure > 15%, mean log error > 4.0 or < 0.2. Difficulty strata from 2 families are approximate covariates; stratified analyses stay exploratory."},
+  {id:"Q2", t:"Track B tuning pilot (30 items × 3 formats × 2 models)", o:"GK", due:5, d:"Tune comparison decoy displacement (start 1.0–2.0 log units) and threshold offsets (0.3–0.8) into the 65–85% accuracy band. Verify stimulus-class balance: 50/50 within every format, randomized side/position, so a stimulus-blind policy scores exactly chance."},
+  {id:"Q3", t:"Item exclusions + final set stratification", o:"JK", due:5, d:"Target 160–170 items, stratified by difficulty quintile, equal domain representation (5 domains)."},
+  {id:"Q4", t:"Finalize JSON schemas + prompt templates", o:"GK", due:5, d:"All five conditions. C2 elicits BOTH confidences (within-1-OOM for cross-condition pooling; interval coverage analyzed within C2 only). C4/C5: platform records turn-1 values; model restatements are checked against them, mismatches flagged."},
+  {id:"Q5", t:"File Study 1 preregistration on OSF (Gate 4)", o:"JK", due:5, ms:true, gate:true, d:"Includes: item-generation algorithm, parameterization schemas, bridge-quantity documentation standards, prompt templates, JSON schemas, scoring, multiplicity (BH-FDR q=.05 per family) and missingness (bounding) policies, confirmatory/exploratory designations, AUROC2 interpretation bands. Item parameters NOT included."},
+  {id:"Q6", t:"Generate final items AFTER filing; hash + archive (Gate 5)", o:"JK", due:5, gate:true, d:"Generate final parameters only after the preregistration timestamp. Archive in a timestamped private OSF repo with a cryptographic hash. Public release only after all data collection ends."},
+ ]},
+ {id:"s1data", name:"Study 1 Data", m:[5,8], cls:"p4", tasks:[
+  {id:"D1", t:"Sentinel run: first day (20 items, all models)", o:"GK", due:6, d:"Baseline for version-stability comparison. Log version strings and fingerprints."},
+  {id:"D2", t:"Track A batch runs (20,160 calls)", o:"GK", due:7, d:"Full crossing: all 160 items × all conditions. C1–C3 single-turn (480/model/rep); C4/C5 independent two-turn trials with fresh C1 first turns (640/model/rep). Monitor parse-failure and refusal rates per cell daily; 15% ceiling triggers the §7.5 response."},
+  {id:"D3", t:"Track B batch runs (4,320 calls)", o:"GK", due:7, d:"80 items × 3 balanced formats × 6 models × 3 reps. Watch for cells drifting above 92% accuracy (ceiling) → §7.7 response: one re-tune + rerun, else declare non-estimable."},
+  {id:"D4", t:"Algorithmic revision coding + 20% human validation", o:"JK+GK", due:8, d:"Primary codes computed from JSON + ground truth (direction = sign of change in |log error|). Two blind coders validate a random 20%: κ ≥ .80 coder–coder AND coder–algorithm. Humans adjudicate indeterminate cases only (unit changes, refusals)."},
+  {id:"D5", t:"Turn-1 restatement mismatch audit", o:"GK", due:8, d:"Compare model-restated original_estimate/confidence against platform-recorded turn-1 values. Mismatch rate is a reportable memory-fidelity finding. All analyses use platform-recorded values."},
+  {id:"D6", t:"Sentinel run: last day + stability verdict", o:"GK", due:8, d:"Rerun the 20-item sentinel. If responses shifted materially, identify affected date ranges and rerun those cells immediately (§7.4)."},
+ ]},
+ {id:"analysis", name:"Analysis", m:[8,10], cls:"p5", tasks:[
+  {id:"A1", t:"Confirmatory Track A: correctness model + calibration", o:"JK", due:9, d:"Mixed logistic on all first-turn responses: correct ~ z_confidence × condition × model + domain + difficulty_quintile + (1 + z_confidence | item). No repetition random effect (3 levels); sensitivity check with repetition as fixed covariate. Brier + decomposition, logit-scale slope/intercept, ECE (10-bin + adaptive sensitivity), C2 interval coverage + Winkler."},
+  {id:"A2", t:"Confirmatory: AUROC2 with interpretation bands", o:"JK", due:9, d:"Per model × condition cell; cluster bootstrap resampling ITEMS. Apply preregistered bands: H1 (CI upper < 0.55), weak monitoring [0.55, 0.70), strong H2 (≥ 0.70, CI lower > 0.55), else indeterminate. BH-FDR q=.05 within family."},
+  {id:"A3", t:"Confirmatory: C4 vs C5 revision analysis (H3)", o:"JK", due:9, d:"revision ~ condition × original_correctness + model + domain + (1|item). H3 supported if C5 revision rate > C4 with no revision-accuracy gain."},
+  {id:"A4", t:"Confirmatory Track B: meta-d'/M-ratio", o:"JK", due:9, d:"Single-cell Bayesian estimation per model × format (240 trials). Non-estimable rules: accuracy outside 55–92% OR ≥ 95% confidence mass on one point → report as finding, don't force-fit. Hierarchical fit across 6 models = sensitivity only. HDI vs 1.0; WAIC for family/format variation."},
+  {id:"A5", t:"Bounding sensitivity analyses (missingness)", o:"JK", due:10, d:"Rescore parse failures as incorrect at cell-median confidence for every confirmatory analysis; flag conclusions that reverse as fragile."},
+  {id:"A6", t:"Exploratory analyses", o:"JK", due:10, d:"Domain variation, cross-model correlation matrix, difficulty-stratified, temperature (T=0/1, temperature-supporting families only), refusal rates, directional-challenge extension."},
+  {id:"A7", t:"Precision simulations for supplementary", o:"GK", due:10, d:"Reproduce the preregistered simulation code with observed parameters; include in supplement."},
+ ]},
+ {id:"dissem", name:"Dissemination", m:[10,12], cls:"p6", tasks:[
+  {id:"M1", t:"Submit Study 0 manuscript", o:"JK", due:11, ms:true, d:"Behavior Research Methods. Simultaneous PsyArXiv preprint."},
+  {id:"M2", t:"Submit Study 1 manuscript", o:"JK", due:12, ms:true, d:"Cognitive Science or Behavior Research Methods. Simultaneous PsyArXiv preprint."},
+  {id:"M3", t:"OSF release: data, code, stimuli (Gate 7)", o:"GK", due:12, ms:true, gate:true, d:"Scored responses, confidence ratings, effect sizes, analysis code, and the (now-public) item set under CC-BY 4.0. AutoPsych released under MIT (GitHub + OSF mirror). Release at submission, per plan."},
+  {id:"M4", t:"Update Machine Psychology Roadmap with Year 1 data", o:"JK", due:12, d:"Feed calibration/discrimination findings into the framework paper; position Year 2 (defensive confabulation) using the C5 infrastructure."},
+  {id:"M5", t:"Year 2 planning + funding targets", o:"JK", due:12, d:"NSF CISE (cognitive science × AI safety) and Templeton/Mind & Life (introspective accuracy bridge). Carry forward unused budget to the $1,000 Year 2 reserve."},
+ ]},
+];
+
+const GATES = [
+ {id:"G1", name:"Gate 1 · Model list frozen", when:"2 weeks before Study 0 data", crit:"Open-weight entry re-evaluated; one small + one capable per proprietary family; versions pinned where supported.", manual:true},
+ {id:"G2", name:"Gate 2 · Study 0 preregistered", when:"Before any Study 0 API call", crit:"OSF timestamp precedes first real call. Rubric, prompts, decoding policy, synthetic library all in the filing.", manual:true},
+ {id:"G3", name:"Gate 3 · Study 0 acceptance rubric", when:"End of Study 0", crit:"Auto-evaluated below from your measured values.", manual:false},
+ {id:"G4", name:"Gate 4 · Study 1 preregistered", when:"Before item generation", crit:"Protocol public; items withheld by design (two-stage mechanism).", manual:true},
+ {id:"G5", name:"Gate 5 · Items generated post-filing, hashed", when:"Immediately after Gate 4", crit:"Timestamped private OSF archive + cryptographic hash. No model contact with items before data collection.", manual:true},
+ {id:"G6", name:"Gate 6 · Data collection complete + stable", when:"End of Study 1 data", crit:"All 24,480 calls captured; sentinel comparison shows no material drift (or affected cells rerun); no cell above the 15% parse-failure ceiling unresolved.", manual:true},
+ {id:"G7", name:"Gate 7 · Open release", when:"At manuscript submission", crit:"Data + code + items public (CC-BY 4.0); AutoPsych on GitHub (MIT); deviations disclosed.", manual:true},
+];
+
+const RISKS = [
+ {id:"R1", name:"§7.1 AutoPsych validation fails (< 2/3 Layer C replications)", resp:"Audit prompt templates vs originals; run exact original stimuli where permitted; distinguish model drift from platform error. 30-day remediation window. Systematic non-replication = publishable diagnostic finding."},
+ {id:"R2", name:"§7.2 Item contamination in a substantial minority", resp:"Sensitivity analyses excluding high-risk items; expected exclusion ≤ 10%. Parameterization is the primary defense."},
+ {id:"R3", name:"§7.3 All models cluster at AUROC2 ≈ 0.50", resp:"Reframe around uniform surface-confidence finding (strong H1 evidence); investigate within-model domain variation as secondary."},
+ {id:"R4", name:"§7.4 Model-version drift during collection", resp:"Pinned versions where supported; sentinel first/last day; rerun affected runs immediately on detection."},
+ {id:"R5", name:"§7.5 Parse failures > 15% in a cell", resp:"Human-coded stratified subsample for that cell; if insufficient, exclude cell and note absence. Bounding sensitivity analysis applies regardless."},
+ {id:"R6", name:"§7.6 Reasoning-token cost overrun / decoding support change", resp:"Reasoning effort pinned to minimum + logged per call; contingency covers 3x output overrun on OpenAI models; if provider removes the setting, rerun affected cells at new minimum and disclose."},
+ {id:"R7", name:"§7.7 Track B accuracy above ceiling despite tuning", resp:"One re-tune + rerun per format; if still outside 55–92%, declare cell non-estimable under the preregistered rule and report as a finding."},
+];
+
+const BUDGET = [
+ {id:"B1", name:"Study 0 API costs", amt:5.16},
+ {id:"B2", name:"Study 1 API costs (Tracks A+B)", amt:37.38},
+ {id:"B3", name:"Calibration + Track B tuning pilots", amt:8.00},
+ {id:"B4", name:"Wolfram Alpha API (ground-truth verification)", amt:100.00},
+ {id:"B5", name:"Parser debugging and retries (~15% overhead)", amt:7.50},
+ {id:"B6", name:"Exploratory analyses beyond prereg", amt:50.00},
+ {id:"B7", name:"Sentinel reruns + stability checks", amt:25.00},
+ {id:"B8", name:"Contingency (pricing, reasoning tokens, extra families, reruns)", amt:616.96},
+];
+const DIRECT_TOTAL = 850.00;
+
+const COUNTERS = [
+ {id:"C1", name:"Study 0 calls", total:9000},
+ {id:"C2", name:"Track A calls", total:20160},
+ {id:"C3", name:"Track B calls", total:4320},
+];
+
+/* ============ STATE ============ */
+const KEY = "mp_year1_pm_v1";
+let S = load();
+function blank(){ return {tasks:{}, gates:{}, rubric:{}, budget:{}, risks:{}, counters:{}, notes:"", collapsed:{}}; }
+function load(){ try{ const raw = localStorage.getItem(KEY); return raw ? Object.assign(blank(), JSON.parse(raw)) : blank(); }catch(e){ return blank(); } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+/* ============ NAV ============ */
+const VIEWS = [["dashboard","Dashboard"],["tasks","Tasks"],["gates","Gates & Rubric"],["budget","Budget"],["risks","Risks"],["data","Log & Data"]];
+const nav = document.getElementById("nav");
+VIEWS.forEach(([id,label],i)=>{
+  const b = document.createElement("button");
+  b.textContent = label; b.dataset.v = id;
+  b.onclick = ()=>show(id);
+  nav.appendChild(b);
+});
+function show(id){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.getElementById("view-"+id).classList.add("active");
+  nav.querySelectorAll("button").forEach(b=>b.classList.toggle("active", b.dataset.v===id));
+  renderAll();
+}
+
+/* ============ HELPERS ============ */
+function allTasks(){ return PHASES.flatMap(ph=>ph.tasks.map(t=>({...t, phase:ph.name, phaseId:ph.id}))); }
+function tstatus(id){ return S.tasks[id] || "todo"; }
+function currentMonthIndex(){
+  const now = new Date();
+  if(now < PROJECT_START) return 0;
+  if(now > PROJECT_END) return 12;
+  return (now.getFullYear()-2026)*12 + now.getMonth() - 6 + 1; // M1 = Jul 2026
+}
+function fmt$(x){ return "$" + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,","); }
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+/* ============ RENDER: DASHBOARD ============ */
+function renderDashboard(){
+  const tasks = allTasks();
+  const done = tasks.filter(t=>tstatus(t.id)==="done").length;
+  document.getElementById("kpi-progress").textContent = done + " / " + tasks.length;
+  document.getElementById("kpi-progress-bar").style.width = (100*done/tasks.length) + "%";
+
+  const cm = currentMonthIndex();
+  const cur = PHASES.filter(p=>cm>=p.m[0] && cm<=p.m[1]).map(p=>p.name).join(" + ") || (cm<1?"Pre-project":"Complete");
+  document.getElementById("kpi-phase").textContent = cur;
+  document.getElementById("kpi-phase").style.fontSize = "17px";
+
+  const gatesPassed = GATES.filter(g=> g.manual ? S.gates[g.id]==="pass" : rubricVerdict().passCount===4).length;
+  document.getElementById("kpi-gates").textContent = gatesPassed + " / " + GATES.length;
+
+  let spent = 0; BUDGET.forEach(b=>{ spent += parseFloat(S.budget[b.id]||0)||0; });
+  document.getElementById("kpi-budget").textContent = fmt$(Math.max(0, DIRECT_TOTAL - spent));
+
+  // Gantt
+  const g = document.getElementById("gantt");
+  let html = '<div></div>' + MONTHS.map(m=>`<div class="gmonth">${m}</div>`).join("");
+  const now = new Date();
+  PHASES.forEach(ph=>{
+    html += `<div class="glabel">${ph.name}</div>`;
+    for(let m=1; m<=12; m++){
+      const on = m>=ph.m[0] && m<=ph.m[1];
+      let today = "";
+      let style = "";
+      if(now>=PROJECT_START && now<=PROJECT_END){
+        const idx = (now.getFullYear()-2026)*12 + now.getMonth() - 6 + 1;
+        if(idx===m){ const frac = now.getDate()/30; today = " today"; style = `style="--tx:${Math.min(95,Math.round(frac*100))}%"`; }
+      }
+      html += `<div class="gcell${on?" on "+ph.cls:""}${today}" ${style}></div>`;
+    }
+  });
+  g.innerHTML = html;
+
+  // phase bars
+  const pb = document.getElementById("phasebars");
+  pb.innerHTML = PHASES.map(ph=>{
+    const tot = ph.tasks.length, d = ph.tasks.filter(t=>tstatus(t.id)==="done").length;
+    return `<div style="margin-bottom:10px;"><div style="display:flex; justify-content:space-between; font-size:13.5px;"><b>${ph.name}</b><span>${d}/${tot} · Months ${ph.m[0]}–${ph.m[1]}</span></div><div class="bar"><div style="width:${tot? (100*d/tot):0}%"></div></div></div>`;
+  }).join("");
+
+  // attention
+  const att = document.getElementById("attention");
+  const items = [];
+  const cmIdx = currentMonthIndex();
+  tasks.forEach(t=>{
+    const st = tstatus(t.id);
+    if(st==="blocked") items.push(`<div style="padding:5px 0;"><span class="chip blocked">BLOCKED</span> ${esc(t.t)}</div>`);
+    else if(st!=="done" && t.due < cmIdx) items.push(`<div style="padding:5px 0;"><span class="chip fail">OVERDUE</span> ${esc(t.t)} <span class="note">(due M${t.due})</span></div>`);
+    else if(st!=="done" && t.due === cmIdx) items.push(`<div style="padding:5px 0;"><span class="chip pending">DUE NOW</span> ${esc(t.t)}</div>`);
+  });
+  RISKS.forEach(r=>{ if(S.risks[r.id]==="triggered") items.push(`<div style="padding:5px 0;"><span class="chip triggered">RISK</span> ${esc(r.name)}</div>`); });
+  att.innerHTML = items.length ? items.join("") : '<span class="note">Nothing overdue, nothing blocked, no triggered risks. As it should be.</span>';
+
+  // counters
+  const co = document.getElementById("counters");
+  co.innerHTML = COUNTERS.map(c=>{
+    const v = parseInt(S.counters[c.id]||0)||0;
+    return `<div style="margin-bottom:10px;"><div style="display:flex; justify-content:space-between; font-size:13.5px;"><b>${c.name}</b>
+      <span><input type="number" min="0" max="${c.total}" value="${v||""}" placeholder="0" style="width:90px"
+      onchange="S.counters['${c.id}']=this.value; save(); renderAll();"> / ${c.total.toLocaleString()}</span></div>
+      <div class="bar green"><div style="width:${Math.min(100,100*v/c.total)}%"></div></div></div>`;
+  }).join("");
+}
+
+/* ============ RENDER: TASKS ============ */
+function renderTasks(){
+  const fs = document.getElementById("f-status").value, fo = document.getElementById("f-owner").value;
+  const el = document.getElementById("tasklist");
+  el.innerHTML = PHASES.map(ph=>{
+    const visible = ph.tasks.filter(t => (!fs || tstatus(t.id)===fs) && (!fo || t.o===fo));
+    if(!visible.length && (fs||fo)) return "";
+    const tot = ph.tasks.length, d = ph.tasks.filter(t=>tstatus(t.id)==="done").length;
+    const collapsed = S.collapsed[ph.id];
+    const rows = collapsed ? "" : visible.map(t=>{
+      const st = tstatus(t.id);
+      const cm = currentMonthIndex();
+      const overdue = st!=="done" && t.due < cm;
+      return `<div class="task ${st==="done"?"done-task":""}" id="task-${t.id}">
+        <select onchange="S.tasks['${t.id}']=this.value; save(); renderAll();">
+          ${["todo","progress","done","blocked"].map(s=>`<option value="${s}" ${s===st?"selected":""}>${{todo:"To do",progress:"In progress",done:"Done",blocked:"Blocked"}[s]}</option>`).join("")}
+        </select>
+        <div class="t-body">
+          <div class="t-title">${esc(t.t)}
+            ${t.ms?'<span class="chip milestone">MILESTONE</span>':""}
+            ${t.gate?'<span class="chip gate">GATE</span>':""}
+          </div>
+          <div class="t-meta">${t.o} · due Month ${t.due} (${MONTHS[t.due-1]}) ${overdue?'<span class="duewarn">· overdue</span>':""} · <span class="t-toggle" onclick="document.getElementById('task-${t.id}').classList.toggle('open')">details</span></div>
+          <div class="t-detail">${esc(t.d)}</div>
+        </div>
+      </div>`;
+    }).join("");
+    return `<div class="card">
+      <div class="phasehead" onclick="S.collapsed['${ph.id}']=!S.collapsed['${ph.id}']; save(); renderTasks();">
+        <h3 style="margin:0;">${ph.name} <span class="note">· Months ${ph.m[0]}–${ph.m[1]}</span></h3>
+        <span class="pct">${d}/${tot} done ${collapsed?"▸":"▾"}</span>
+      </div>
+      ${rows}
+    </div>`;
+  }).join("");
+}
+
+/* ============ RENDER: GATES ============ */
+function rubricVerdict(){
+  const A = parseFloat(S.rubric.A), B = parseFloat(S.rubric.B), C = parseFloat(S.rubric.C), D = parseFloat(S.rubric.D);
+  const res = {
+    A: isNaN(A)?null:(A>=98), B: isNaN(B)?null:(B>=0.90), C: isNaN(C)?null:(C>=2), D: isNaN(D)?null:(D>=99),
+  };
+  const entered = Object.values(res).filter(v=>v!==null).length;
+  const passCount = Object.values(res).filter(v=>v===true).length;
+  return {res, entered, passCount};
+}
+function renderGates(){
+  const gl = document.getElementById("gatelist");
+  gl.innerHTML = GATES.map(g=>{
+    let status, chip;
+    if(g.manual){
+      status = S.gates[g.id] || "pending";
+      chip = `<select onchange="S.gates['${g.id}']=this.value; save(); renderAll();">
+        ${["pending","pass","fail"].map(s=>`<option value="${s}" ${s===status?"selected":""}>${s.toUpperCase()}</option>`).join("")}</select>`;
+    } else {
+      const v = rubricVerdict();
+      const st = v.entered<4 ? "pending" : (v.passCount===4 ? "pass" : "fail");
+      chip = `<span class="chip ${st==="pass"?"pass":st==="fail"?"fail":"pending"}">${st.toUpperCase()} (auto)</span>`;
+    }
+    return `<div class="card"><div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+      <div><b>${g.name}</b><div class="note">${g.when}</div><div style="font-size:13.5px; margin-top:4px;">${g.crit}</div></div>
+      <div>${chip}</div></div></div>`;
+  }).join("");
+
+  // rubric inputs
+  ["A","B","C","D"].forEach(k=>{
+    const inp = document.getElementById("rub-"+k);
+    if(inp && document.activeElement!==inp) inp.value = S.rubric[k] ?? "";
+    const chipEl = document.getElementById("rub-"+k+"-chip");
+    const v = rubricVerdict().res[k];
+    chipEl.className = "chip " + (v===null?"pending":v?"pass":"fail");
+    chipEl.textContent = v===null?"PENDING":v?"PASS":"FAIL";
+  });
+  const v = rubricVerdict();
+  const dec = document.getElementById("rub-decision");
+  if(v.entered<4){
+    dec.className = "decision";
+    dec.innerHTML = `<b>${v.entered}/4 values entered.</b> The preregistered rule applies once all four layers are measured.`;
+  } else if(v.passCount===4){
+    dec.className = "decision ok";
+    dec.innerHTML = `<b>4/4 criteria met: AutoPsych is validated for Year 1 use.</b> Proceed to Study 1 as planned. Release the platform open-source (MIT) per the Open Science commitments.`;
+  } else if(v.passCount===3){
+    dec.className = "decision warn";
+    dec.innerHTML = `<b>3/4: remediation path.</b> Diagnose and fix the failing layer within the 30-day window (task S7), re-run that layer, and re-enter its value here. Study 1 prep may proceed only where it does not depend on the failing layer.`;
+  } else {
+    dec.className = "decision bad";
+    dec.innerHTML = `<b>${v.passCount}/4: full pipeline audit required before Study 1.</b> Write up Study 0 results as a diagnostic contribution (§5.2.3). If Layer C is the failure: check prompts against originals, run exact stimuli where permitted, and distinguish model drift from platform error (§7.1).`;
+  }
+}
+["A","B","C","D"].forEach(k=>{
+  document.getElementById("rub-"+k).addEventListener("input", e=>{ S.rubric[k]=e.target.value; save(); renderGates(); renderDashboard(); });
+});
+
+/* ============ RENDER: BUDGET ============ */
+function renderBudget(){
+  const t = document.getElementById("budgettable");
+  let spent = 0;
+  t.innerHTML = "<tr><th>Line</th><th>Budgeted</th><th>Spent (enter)</th><th>Remaining</th></tr>" +
+    BUDGET.map(b=>{
+      const sp = parseFloat(S.budget[b.id]||0)||0; spent += sp;
+      const rem = b.amt - sp;
+      return `<tr><td>${b.name}</td><td>${fmt$(b.amt)}</td>
+        <td><input type="number" step="0.01" min="0" value="${S.budget[b.id]??""}" placeholder="0.00"
+          onchange="S.budget['${b.id}']=this.value; save(); renderAll();"></td>
+        <td style="color:${rem<0?"var(--red)":"inherit"}; font-weight:${rem<0?"bold":"normal"};">${fmt$(rem)}</td></tr>`;
+    }).join("") +
+    `<tr><td><b>TOTAL DIRECT</b></td><td><b>${fmt$(DIRECT_TOTAL)}</b></td><td><b>${fmt$(spent)}</b></td><td><b>${fmt$(DIRECT_TOTAL-spent)}</b></td></tr>`;
+  document.getElementById("b-spent").textContent = fmt$(spent);
+  document.getElementById("b-remaining").textContent = fmt$(DIRECT_TOTAL-spent);
+}
+
+/* ============ RENDER: RISKS ============ */
+function renderRisks(){
+  const el = document.getElementById("risklist");
+  el.innerHTML = RISKS.map(r=>{
+    const st = S.risks[r.id] || "dormant";
+    return `<div class="card"><div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap;">
+      <div style="flex:1; min-width:250px;"><b>${esc(r.name)}</b>
+        <div style="font-size:13.5px; margin-top:5px;"><span class="note">Preregistered response:</span> ${esc(r.resp)}</div></div>
+      <select onchange="S.risks['${r.id}']=this.value; save(); renderAll();">
+        ${["dormant","triggered","resolved"].map(s=>`<option value="${s}" ${s===st?"selected":""}>${s.toUpperCase()}</option>`).join("")}
+      </select></div></div>`;
+  }).join("");
+}
+
+/* ============ NOTES / EXPORT ============ */
+const notesEl = document.getElementById("notes");
+notesEl.addEventListener("input", ()=>{ S.notes = notesEl.value; save(); });
+function exportState(){
+  const blob = new Blob([JSON.stringify(S,null,2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "machine_psychology_pm_state_" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+}
+function importState(inp){
+  const f = inp.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ()=>{ try{ S = Object.assign(blank(), JSON.parse(r.result)); save(); notesEl.value = S.notes||""; renderAll(); alert("Progress imported."); }catch(e){ alert("Could not read that file."); } };
+  r.readAsText(f);
+  inp.value = "";
+}
+function resetState(){
+  if(confirm("Erase all progress, rubric values, budget entries, and notes?")){ S = blank(); save(); notesEl.value=""; renderAll(); }
+}
+
+/* ============ MASTER RENDER ============ */
+function renderAll(){ renderDashboard(); renderTasks(); renderGates(); renderBudget(); renderRisks(); }
+document.getElementById("f-status").addEventListener("change", renderTasks);
+document.getElementById("f-owner").addEventListener("change", renderTasks);
+notesEl.value = S.notes || "";
+show("dashboard");
+</script>
+</body>
+</html>

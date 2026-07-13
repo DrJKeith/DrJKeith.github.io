@@ -12,9 +12,30 @@
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{font-family:Georgia,'Times New Roman',serif; background:var(--paper); color:var(--ink); font-size:15px; line-height:1.5;}
-  header{background:var(--navy); color:#fff; padding:18px 28px;}
+  header{background:var(--navy); color:#fff; padding:18px 28px 12px;}
+  .header-row{display:flex; align-items:flex-start; justify-content:space-between; gap:20px;}
+  .header-title{min-width:260px;}
   header h1{font-size:20px; letter-spacing:.5px;}
   header .sub{font-size:13px; opacity:.85; margin-top:2px; font-style:italic;}
+  .cloudbar{display:flex; align-items:center; justify-content:flex-end; gap:7px; flex-wrap:wrap; font-family:Arial,Helvetica,sans-serif; font-size:12px;}
+  .cloudbar button,.auth-card button,.conflict-actions button{font:inherit; border:1px solid rgba(255,255,255,.45); background:transparent; color:#fff; border-radius:5px; padding:5px 9px; cursor:pointer;}
+  .cloudbar button:hover,.cloudbar button:focus-visible{background:#fff; color:var(--navy);}
+  #cloud-status{font-weight:bold;}
+  #cloud-status[data-tone="ok"]{color:#bbf7d0;}
+  #cloud-status[data-tone="working"]{color:#dbeafe;}
+  #cloud-status[data-tone="warning"]{color:#fde68a;}
+  #cloud-status[data-tone="error"]{color:#fecaca;}
+  #cloud-user{max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; opacity:.85;}
+  .cloud-conflict{display:flex; align-items:center; justify-content:flex-end; gap:10px; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.2); font-family:Arial,Helvetica,sans-serif; font-size:12px;}
+  .cloud-conflict[hidden]{display:none;}
+  .conflict-actions{display:flex; gap:7px;}
+  .auth-gate{position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:20px; background:rgba(22,50,79,.88); backdrop-filter:blur(5px);}
+  .auth-gate[hidden]{display:none;}
+  .auth-card{width:min(430px,100%); background:#fff; color:var(--ink); border-radius:10px; padding:26px; box-shadow:0 20px 60px rgba(0,0,0,.3); text-align:center;}
+  .auth-card h2{margin:0 0 10px; border:0; padding:0;}
+  .auth-card p{color:#4b5563; margin-bottom:18px;}
+  .auth-card button{background:var(--navy); border-color:var(--navy); padding:9px 16px;}
+  .auth-card button:hover,.auth-card button:focus-visible{background:#244c73;}
   nav{display:flex; gap:2px; background:var(--navy); padding:0 20px; flex-wrap:wrap;}
   nav button{font-family:inherit; font-size:14px; padding:9px 16px; border:none; background:transparent; color:#cbd5e1; cursor:pointer; border-radius:6px 6px 0 0;}
   nav button.active{background:var(--paper); color:var(--ink); font-weight:bold;}
@@ -26,7 +47,13 @@
   .card{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin-bottom:14px;}
   .grid{display:grid; gap:14px;}
   .grid.c2{grid-template-columns:1fr 1fr;} .grid.c3{grid-template-columns:1fr 1fr 1fr;} .grid.c4{grid-template-columns:repeat(4,1fr);}
-  @media(max-width:800px){.grid.c2,.grid.c3,.grid.c4{grid-template-columns:1fr;}}
+  @media(max-width:800px){
+    .grid.c2,.grid.c3,.grid.c4{grid-template-columns:1fr;}
+    .header-row{display:block;}
+    .cloudbar{justify-content:flex-start; margin-top:12px;}
+    #cloud-user{max-width:160px;}
+    .cloud-conflict{align-items:flex-start; justify-content:flex-start; flex-direction:column;}
+  }
   .kpi{text-align:center; padding:14px 8px;}
   .kpi .num{font-size:28px; font-weight:bold; color:var(--navy);}
   .kpi .lbl{font-size:12px; color:var(--gray); margin-top:2px;}
@@ -90,15 +117,40 @@
   .filters{display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;}
   .filters select{font-family:inherit; font-size:13px; padding:5px 8px; border:1px solid var(--line); border-radius:6px; background:#fff;}
   footer{text-align:center; font-size:12px; color:var(--gray); padding:20px; border-top:1px solid var(--line); margin-top:30px;}
-  @media print{nav,.btnrow,.filters{display:none;} .view{display:block !important;} body{background:#fff;}}
+  @media print{nav,.btnrow,.filters,.cloudbar,.cloud-conflict,.auth-gate{display:none !important;} .view{display:block !important;} body{background:#fff;}}
 </style>
 </head>
 <body>
 <header>
-  <h1>MACHINE PSYCHOLOGY · Year 1 Project Manager</h1>
-  <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · built from Research Plan v4</div>
+  <div class="header-row">
+    <div class="header-title">
+      <h1>MACHINE PSYCHOLOGY · Year 1 Project Manager</h1>
+      <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · built from Research Plan v4</div>
+    </div>
+    <div class="cloudbar" aria-label="Cloud synchronization controls">
+      <span id="cloud-status" data-tone="working" role="status">Connecting…</span>
+      <span id="cloud-user"></span>
+      <button type="button" id="cloud-save-now" hidden>Save now</button>
+      <button type="button" id="cloud-load-now" hidden>Load cloud</button>
+      <button type="button" id="cloud-sign-out" hidden>Sign out</button>
+    </div>
+  </div>
+  <div class="cloud-conflict" id="cloud-conflict" hidden>
+    <span>A newer cloud copy exists. Choose which version to keep.</span>
+    <span class="conflict-actions">
+      <button type="button" id="cloud-use-cloud">Use cloud copy</button>
+      <button type="button" id="cloud-use-device">Use this device</button>
+    </span>
+  </div>
 </header>
 <nav id="nav"></nav>
+<div class="auth-gate" id="auth-gate" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+  <div class="auth-card">
+    <h2 id="auth-title">Checking secure access…</h2>
+    <p id="auth-detail">Your saved project state will load automatically.</p>
+    <button type="button" id="cloud-sign-in" hidden>Continue with Google</button>
+  </div>
+</div>
 <main>
 
 <!-- ================= DASHBOARD ================= -->
@@ -208,7 +260,7 @@
       <button class="act" onclick="window.print()">Print status report</button>
       <button class="act warn" onclick="resetState()">Reset all progress</button>
     </div>
-    <div class="note">Progress lives in this browser (localStorage). To sync with Gabriel: export, send the JSON, he imports. The HTML file itself never changes.</div>
+    <div class="note">Signed-in progress is saved automatically to your private Supabase record and remains available as a local browser backup. Export JSON periodically for an additional offline backup.</div>
   </div>
   <h2>Key Numbers (from v4, for quick reference)</h2>
   <div class="card"><table>
@@ -226,8 +278,11 @@
 </div>
 
 </main>
-<footer>Machine Psychology Year 1 · self-contained tool · no data leaves this browser</footer>
+<footer>Machine Psychology Year 1 · private Supabase progress sync · local backup retained</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.3/dist/umd/supabase.min.js"></script>
+<script src="./supabase-config.js"></script>
+<script src="./cloud-sync.js"></script>
 <script>
 "use strict";
 /* ============ PROJECT DATA (from Research Plan v4) ============ */
@@ -333,7 +388,8 @@ const KEY = "mp_year1_pm_v1";
 let S = load();
 function blank(){ return {tasks:{}, gates:{}, rubric:{}, budget:{}, risks:{}, counters:{}, notes:"", collapsed:{}}; }
 function load(){ try{ const raw = localStorage.getItem(KEY); return raw ? Object.assign(blank(), JSON.parse(raw)) : blank(); }catch(e){ return blank(); } }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function persistLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function save(){ persistLocal(); window.CloudSync?.queueSave(); }
 
 /* ============ NAV ============ */
 const VIEWS = [["dashboard","Dashboard"],["tasks","Tasks"],["gates","Gates & Rubric"],["budget","Budget"],["risks","Risks"],["data","Log & Data"]];
@@ -584,6 +640,15 @@ document.getElementById("f-status").addEventListener("change", renderTasks);
 document.getElementById("f-owner").addEventListener("change", renderTasks);
 notesEl.value = S.notes || "";
 show("dashboard");
+window.CloudSync.initialize({
+  getState: ()=>JSON.parse(JSON.stringify(S)),
+  setState: nextState=>{
+    S = Object.assign(blank(), nextState || {});
+    persistLocal();
+    notesEl.value = S.notes || "";
+    renderAll();
+  }
+});
 </script>
 </body>
 </html>

@@ -2,6 +2,8 @@
   "use strict";
 
   const TABLE = "project_manager_states";
+  const EXECUTION_TABLE = "project_execution_status";
+  const EXECUTION_PROJECT_KEY = "autopsych-year1";
   const SAVE_DELAY_MS = 1200;
   let client = null;
   let session = null;
@@ -108,6 +110,22 @@
     setStatus(formatSavedTime(data.updated_at), "ok");
   }
 
+  async function loadExecutionStatus() {
+    if (!session || !app?.setExecutionStatus) return;
+    app.setExecutionStatus({ loading: true });
+    const { data, error } = await client
+      .from(EXECUTION_TABLE)
+      .select("snapshot, revision, source_updated_at, received_at")
+      .eq("project_key", EXECUTION_PROJECT_KEY)
+      .maybeSingle();
+    if (error) {
+      console.error("Execution status load failed", error);
+      app.setExecutionStatus({ error: "The secure execution record could not be reached." });
+      return;
+    }
+    app.setExecutionStatus(data || null);
+  }
+
   async function saveNow(options = {}) {
     if (!session || !app) return;
     const { force = false } = options;
@@ -171,6 +189,7 @@
       revision = 0;
       dirty = false;
       setSignedInControls(null);
+      app?.setExecutionStatus?.(null);
       if (accessDenied) {
         setStatus("Unauthorized account", "error");
         setGate("denied");
@@ -198,6 +217,7 @@
       }
       setGate("open");
       await loadCloud({ discardLocal: true });
+      await loadExecutionStatus();
     } catch (error) {
       console.error("Cloud initialization failed", error);
       setStatus("Cloud connection failed", "error");
@@ -235,6 +255,7 @@
     byId("cloud-load-now")?.addEventListener("click", () => void loadCloud());
     byId("cloud-use-device")?.addEventListener("click", () => void saveNow({ force: true }));
     byId("cloud-use-cloud")?.addEventListener("click", () => void loadCloud({ discardLocal: true }));
+    byId("execution-refresh")?.addEventListener("click", () => void loadExecutionStatus());
 
     if (!library || !config || config.url.includes("__") || config.publishableKey.includes("__")) {
       setStatus("Cloud sync not configured", "error");
@@ -264,16 +285,18 @@
     window.addEventListener("online", () => {
       if (dirty) queueSave();
       else if (session) void loadCloud({ discardLocal: true });
+      if (session) void loadExecutionStatus();
     });
     window.addEventListener("offline", () => setStatus("Offline · changes kept locally", "warning"));
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible" && session && !dirty) {
         void loadCloud({ discardLocal: true });
+        void loadExecutionStatus();
       }
     });
 
     await handleSession(data.session);
   }
 
-  window.CloudSync = Object.freeze({ initialize, queueSave, saveNow, loadCloud });
+  window.CloudSync = Object.freeze({ initialize, queueSave, saveNow, loadCloud, loadExecutionStatus });
 })();

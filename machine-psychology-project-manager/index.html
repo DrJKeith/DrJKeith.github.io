@@ -29,6 +29,22 @@
   .cloud-conflict{display:flex; align-items:center; justify-content:flex-end; gap:10px; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.2); font-family:Arial,Helvetica,sans-serif; font-size:12px;}
   .cloud-conflict[hidden]{display:none;}
   .conflict-actions{display:flex; gap:7px;}
+  .exec-heading{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:22px; border-bottom:2px solid var(--navy);}
+  .exec-heading h2{margin:0; border:0;}
+  .execution-card{padding:18px;}
+  .execution-kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+  .execution-kpi{border:1px solid var(--line); border-radius:7px; padding:11px; background:#faf9f6;}
+  .execution-kpi .value{font-size:17px; font-weight:bold; color:var(--navy); overflow-wrap:anywhere;}
+  .execution-kpi .label{font-family:Arial,Helvetica,sans-serif; font-size:10px; letter-spacing:.5px; color:var(--gray); margin-top:3px;}
+  .execution-kpi .detail{font-size:11px; color:var(--gray); margin-top:3px;}
+  .execution-calls{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px;}
+  .execution-call{font-size:13px;}
+  .execution-call-head{display:flex; justify-content:space-between; gap:8px;}
+  .execution-warnings{margin-top:14px;}
+  .execution-warning{padding:6px 9px; margin-top:6px; border-left:3px solid var(--amber); background:#fffbeb; font-size:12.5px;}
+  .execution-ok{margin-top:14px; color:var(--green); font-size:12.5px; font-weight:bold;}
+  .execution-meta{margin-top:12px; font-size:11px; color:var(--gray);}
+  .execution-error{color:var(--red); font-weight:bold;}
   .auth-gate{position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:20px; background:rgba(22,50,79,.88); backdrop-filter:blur(5px);}
   .auth-gate[hidden]{display:none;}
   .auth-card{width:min(430px,100%); background:#fff; color:var(--ink); border-radius:10px; padding:26px; box-shadow:0 20px 60px rgba(0,0,0,.3); text-align:center;}
@@ -53,6 +69,8 @@
     .cloudbar{justify-content:flex-start; margin-top:12px;}
     #cloud-user{max-width:160px;}
     .cloud-conflict{align-items:flex-start; justify-content:flex-start; flex-direction:column;}
+    .execution-kpis,.execution-calls{grid-template-columns:1fr;}
+    .exec-heading{align-items:flex-end;}
   }
   .kpi{text-align:center; padding:14px 8px;}
   .kpi .num{font-size:28px; font-weight:bold; color:var(--navy);}
@@ -161,6 +179,16 @@
     <div class="card kpi"><div class="num" id="kpi-gates">–</div><div class="lbl">GATES PASSED</div></div>
     <div class="card kpi"><div class="num" id="kpi-budget">–</div><div class="lbl">DIRECT BUDGET REMAINING</div></div>
   </div>
+
+  <section aria-labelledby="execution-heading">
+    <div class="exec-heading">
+      <h2 id="execution-heading">AutoPsych Execution</h2>
+      <button type="button" class="act" id="execution-refresh">Refresh execution</button>
+    </div>
+    <div class="card execution-card" id="execution-status" aria-live="polite">
+      <span class="note">Waiting for the secure execution snapshot…</span>
+    </div>
+  </section>
 
   <h2>Phase Timeline</h2>
   <div class="card"><div class="gantt" id="gantt"></div>
@@ -419,6 +447,82 @@ function currentMonthIndex(){
 function fmt$(x){ return "$" + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,","); }
 function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
 
+function executionText(tag, className, text){
+  const element = document.createElement(tag);
+  if(className) element.className = className;
+  element.textContent = text;
+  return element;
+}
+function executionDate(value){
+  if(!value) return "Unknown";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "Unknown" : date.toLocaleString([], {dateStyle:"medium", timeStyle:"short"});
+}
+function renderExecutionStatus(record){
+  const root = document.getElementById("execution-status");
+  if(!root) return;
+  root.replaceChildren();
+  if(record?.loading){
+    root.append(executionText("span","note","Loading the latest AutoPsych execution snapshot…"));
+    return;
+  }
+  if(record?.error){
+    root.append(executionText("div","execution-error","Execution status could not be loaded."));
+    root.append(executionText("div","note",record.error));
+    return;
+  }
+  const snapshot = record?.snapshot;
+  if(!snapshot){
+    root.append(executionText("span","note","No AutoPsych execution snapshot has been received yet."));
+    return;
+  }
+
+  const kpis = executionText("div","execution-kpis","");
+  const addKpi = (label,value,detail="")=>{
+    const card = executionText("div","execution-kpi","");
+    card.append(executionText("div","value",value || "Unknown"));
+    card.append(executionText("div","label",label));
+    if(detail) card.append(executionText("div","detail",detail));
+    kpis.append(card);
+  };
+  const commit = snapshot.repository?.commit_sha;
+  addKpi("EXECUTION STAGE", snapshot.phase?.label, snapshot.phase?.reason || "");
+  addKpi("PROTOCOL", snapshot.protocol?.status, snapshot.protocol?.id || "");
+  addKpi("AUTOPSYCH COMMIT", commit ? commit.slice(0,10) : "Unavailable", snapshot.repository?.dirty ? "Uncommitted changes present" : "Working tree recorded as clean");
+  addKpi("RUNS FOUND", String(snapshot.quality?.run_count ?? 0), `Snapshot revision ${record.revision ?? "–"}`);
+  root.append(kpis);
+
+  const callGrid = executionText("div","execution-calls","");
+  [["study0","Study 0"],["track_a","Track A"],["track_b","Track B"]].forEach(([key,label])=>{
+    const values = snapshot.calls?.[key] || {};
+    const complete = Number(values.complete) || 0;
+    const intended = Number(values.intended) || 0;
+    const percent = intended ? Math.min(100,100*complete/intended) : 0;
+    const call = executionText("div","execution-call","");
+    const head = executionText("div","execution-call-head","");
+    head.append(executionText("b","",label));
+    head.append(executionText("span","",`${complete.toLocaleString()} / ${intended.toLocaleString()}`));
+    call.append(head);
+    const bar = executionText("div","bar green","");
+    const fill = executionText("div","","");
+    fill.style.width = `${percent}%`;
+    bar.append(fill);
+    call.append(bar);
+    callGrid.append(call);
+  });
+  root.append(callGrid);
+
+  const warnings = Array.isArray(snapshot.warnings) ? snapshot.warnings : [];
+  if(warnings.length){
+    const warningList = executionText("div","execution-warnings","");
+    warnings.forEach(message=>warningList.append(executionText("div","execution-warning",String(message))));
+    root.append(warningList);
+  }else{
+    root.append(executionText("div","execution-ok","No execution-integrity warnings in the latest snapshot."));
+  }
+  root.append(executionText("div","execution-meta",`Generated ${executionDate(snapshot.generated_at)} · received ${executionDate(record.received_at)} · protocol hash ${(snapshot.protocol?.sha256 || "unknown").slice(0,12)}`));
+}
+
 /* ============ RENDER: DASHBOARD ============ */
 function renderDashboard(){
   const tasks = allTasks();
@@ -647,7 +751,8 @@ window.CloudSync.initialize({
     persistLocal();
     notesEl.value = S.notes || "";
     renderAll();
-  }
+  },
+  setExecutionStatus: renderExecutionStatus
 });
 </script>
 </body>

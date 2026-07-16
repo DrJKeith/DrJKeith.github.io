@@ -45,6 +45,27 @@
   .execution-ok{margin-top:14px; color:var(--green); font-size:12.5px; font-weight:bold;}
   .execution-meta{margin-top:12px; font-size:11px; color:var(--gray);}
   .execution-error{color:var(--red); font-weight:bold;}
+  .partner-layout{display:grid; grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr); gap:18px; align-items:start;}
+  .partner-title-row{display:flex; align-items:flex-start; justify-content:space-between; gap:12px;}
+  .partner-task-code{font-family:Arial,Helvetica,sans-serif; font-size:11px; letter-spacing:.7px; color:var(--accent); font-weight:bold; text-transform:uppercase;}
+  .partner-task-title{font-size:23px; line-height:1.2; color:var(--navy); margin-top:4px;}
+  .partner-task-meta{font-family:Arial,Helvetica,sans-serif; color:var(--gray); font-size:12px; margin-top:7px;}
+  .partner-criteria{margin-top:14px; padding:11px 12px; background:#faf9f6; border-left:3px solid var(--navy); font-size:13.5px;}
+  .partner-guide{margin-top:15px; border-top:1px solid var(--line); padding-top:12px;}
+  .partner-guide h3{margin:12px 0 5px; font-size:15px;}
+  .partner-guide p{margin:5px 0 9px;}
+  .partner-guide ol,.partner-guide ul{padding-left:22px; margin:5px 0 10px;}
+  .partner-guide li{margin:4px 0;}
+  .partner-guide pre{white-space:pre-wrap; overflow-wrap:anywhere; background:#f1f5f9; border:1px solid #dbe2ea; border-radius:5px; padding:9px; font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; margin:7px 0;}
+  .partner-actions{display:flex; flex-wrap:wrap; gap:7px; margin-top:14px;}
+  .partner-boundary{margin-top:12px; font-size:11.5px; color:var(--gray);}
+  .codex-handoff{border-top:4px solid var(--navy);}
+  .codex-handoff h3{margin-top:0; font-size:18px;}
+  .codex-steps{padding-left:20px; margin:10px 0 14px;}
+  .codex-steps li{margin:7px 0;}
+  .codex-prompts{margin-top:14px; padding-top:12px; border-top:1px solid var(--line);}
+  .codex-prompt{padding:8px 9px; background:#faf9f6; border:1px solid var(--line); border-radius:5px; margin-top:7px; font-size:12.5px;}
+  #codex-copy-status{min-height:18px; margin-top:8px; font-size:11.5px; color:var(--green);}
   .auth-gate{position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:20px; background:rgba(22,50,79,.88); backdrop-filter:blur(5px);}
   .auth-gate[hidden]{display:none;}
   .auth-card{width:min(430px,100%); background:#fff; color:var(--ink); border-radius:10px; padding:26px; box-shadow:0 20px 60px rgba(0,0,0,.3); text-align:center;}
@@ -71,6 +92,7 @@
     .cloud-conflict{align-items:flex-start; justify-content:flex-start; flex-direction:column;}
     .execution-kpis,.execution-calls{grid-template-columns:1fr;}
     .exec-heading{align-items:flex-end;}
+    .partner-layout{grid-template-columns:1fr;}
   }
   .kpi{text-align:center; padding:14px 8px;}
   .kpi .num{font-size:28px; font-weight:bold; color:var(--navy);}
@@ -217,6 +239,38 @@
   </div>
 </div>
 
+<!-- ================= RESEARCH PARTNER ================= -->
+<div class="view" id="view-partner">
+  <div class="partner-layout">
+    <section aria-labelledby="next-task-heading">
+      <h2 id="next-task-heading">Your Next Task</h2>
+      <div class="card" id="partner-next-task"></div>
+    </section>
+    <section aria-labelledby="codex-handoff-heading">
+      <h2 id="codex-handoff-heading">Work With Codex</h2>
+      <div class="card codex-handoff">
+        <h3>Continue in this Codex project</h3>
+        <p>Codex is the conversational research partner. It can inspect the real AutoPsych files, run tests, challenge the plan, and help execute approved work.</p>
+        <ol class="codex-steps">
+          <li>Review the next-task instructions on the left.</li>
+          <li>Copy the task brief below.</li>
+          <li>Return to this Codex conversation and paste it, then ask for guidance or execution.</li>
+        </ol>
+        <button type="button" class="act" id="codex-copy-brief">Copy current task brief</button>
+        <div id="codex-copy-status" aria-live="polite"></div>
+        <div class="codex-prompts">
+          <b>Useful follow-ups</b>
+          <div class="codex-prompt">Walk me through the first step and wait for my response.</div>
+          <div class="codex-prompt">Inspect the existing evidence before we redo anything.</div>
+          <div class="codex-prompt">Pressure-test this approach and give me frank feedback.</div>
+          <div class="codex-prompt">What evidence would prove this task is complete?</div>
+        </div>
+        <p class="partner-boundary">No OpenAI API call is made by this website. Your authenticated Codex project remains the conversational and file-aware workspace.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
 <!-- ================= TASKS ================= -->
 <div class="view" id="view-tasks">
   <div class="filters">
@@ -310,7 +364,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.3/dist/umd/supabase.min.js"></script>
 <script src="./supabase-config.js"></script>
-<script src="./cloud-sync.js?v=6160d86"></script>
+<script src="./cloud-sync.js?v=codex-research-partner-1"></script>
 <script>
 "use strict";
 /* ============ PROJECT DATA (from Research Plan v4) ============ */
@@ -414,13 +468,14 @@ const COUNTERS = [
 /* ============ STATE ============ */
 const KEY = "mp_year1_pm_v1";
 let S = load();
+let latestExecutionRecord = null;
 function blank(){ return {tasks:{}, gates:{}, rubric:{}, budget:{}, risks:{}, counters:{}, notes:"", collapsed:{}}; }
 function load(){ try{ const raw = localStorage.getItem(KEY); return raw ? Object.assign(blank(), JSON.parse(raw)) : blank(); }catch(e){ return blank(); } }
 function persistLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 function save(){ persistLocal(); window.CloudSync?.queueSave(); }
 
 /* ============ NAV ============ */
-const VIEWS = [["dashboard","Dashboard"],["tasks","Tasks"],["gates","Gates & Rubric"],["budget","Budget"],["risks","Risks"],["data","Log & Data"]];
+const VIEWS = [["dashboard","Dashboard"],["partner","Research Partner"],["tasks","Tasks"],["gates","Gates & Rubric"],["budget","Budget"],["risks","Risks"],["data","Log & Data"]];
 const nav = document.getElementById("nav");
 VIEWS.forEach(([id,label],i)=>{
   const b = document.createElement("button");
@@ -461,6 +516,8 @@ function executionDate(value){
 function renderExecutionStatus(record){
   const root = document.getElementById("execution-status");
   if(!root) return;
+  if(record?.snapshot) latestExecutionRecord = record;
+  else if(!record?.loading && !record?.error) latestExecutionRecord = null;
   root.replaceChildren();
   if(record?.loading){
     root.append(executionText("span","note","Loading the latest AutoPsych execution snapshot…"));
@@ -521,6 +578,135 @@ function renderExecutionStatus(record){
     root.append(executionText("div","execution-ok","No execution-integrity warnings in the latest snapshot."));
   }
   root.append(executionText("div","execution-meta",`Generated ${executionDate(snapshot.generated_at)} · received ${executionDate(record.received_at)} · protocol hash ${(snapshot.protocol?.sha256 || "unknown").slice(0,12)}`));
+  renderPartner();
+}
+
+
+/* ============ CODEX RESEARCH PARTNER HANDOFF ============ */
+function currentNextTask(){
+  const indexed=allTasks().map((task,index)=>({...task,index,status:tstatus(task.id)}));
+  const actionable=indexed.filter(task=>task.status!=="done"&&task.status!=="blocked");
+  const candidates=actionable.length?actionable:indexed.filter(task=>task.status!=="done");
+  return candidates.sort((a,b)=>a.due-b.due||((a.status==="progress"?0:1)-(b.status==="progress"?0:1))||a.index-b.index)[0]||null;
+}
+function localTaskGuide(task){
+  if(!task) return "Every project task is marked complete. Review gates, unresolved risks, and the project log before closing the project.";
+  if(task.id==="P1") return [
+    "### Objective",
+    "Verify and finish the AutoPsych core pipeline; do not rebuild components that already work.",
+    "### Steps",
+    "1. Open the execution repository:",
+    "```",
+    "cd \"/Users/julian/Documents/autopsych\"",
+    "```",
+    "2. Ask Codex to run the full test suite and aggregate status command, then record the exact passing and failing checks.",
+    "3. Have Codex inspect the runner and immutable ledger against P1's required fields: model version, timestamp, prompt hash, raw response, parsed values, scores, API status, and available seed or fingerprint.",
+    "4. Run the mock or dry-run path. Confirm every intended mock call produces one complete manifest/ledger record and that rerunning cannot overwrite an existing run.",
+    "5. If evidence already satisfies the criterion, log the commands and artifact locations, then mark P1 Done. Otherwise keep it In progress and record the smallest concrete gap list before changing code.",
+    "### Done when",
+    "A dry run produces complete records for 100% of intended mock calls, the evidence is logged, and the dashboard status matches that evidence."
+  ].join("\n");
+  const ownerInstruction=task.o==="GK"
+    ? "Because this is Gabriel-owned, use Codex first to verify evidence and define Julian's handoff or acceptance check; do not silently assume ownership."
+    : task.o==="JK+GK"
+      ? "Use Codex to separate Julian's decision/review work from Gabriel's execution work before starting."
+      : "Use Codex to confirm the current artifact and remaining gap before creating new work.";
+  return [
+    "### Objective",task.d,"### Before you begin",ownerInstruction,"### Steps",
+    "1. Ask Codex to inspect the current artifact or evidence; do not start from a blank document if work already exists.",
+    "2. Compare the existing state line by line with the acceptance criterion and write a short gap list.",
+    "3. Complete only the remaining gaps, preserving all preregistration and gate constraints.",
+    "4. Run the relevant test, review, audit, or timestamp check and retain the result as completion evidence.",
+    "5. Record the outcome in the Project Log, then set the task to Done only if the evidence supports it; otherwise use In progress or Blocked.",
+    "### Done when",task.d
+  ].join("\n");
+}
+function appendGuideBlock(root,type,text){
+  if(type==="code"){root.append(executionText("pre","",text));return;}
+  if(type==="heading"){root.append(executionText("h3","",text));return;}
+  root.append(executionText("p","",text));
+}
+function renderGuideMarkdown(root,markdown){
+  root.replaceChildren();
+  const lines=String(markdown||"").split("\n");
+  let list=null,code=null,orderedCount=0;
+  const flushCode=()=>{if(code){appendGuideBlock(root,"code",code.join("\n"));code=null;}};
+  lines.forEach(raw=>{
+    const line=raw.trim();
+    if(line.startsWith("```")){if(code){flushCode();}else{list=null;code=[];}return;}
+    if(code){code.push(raw);return;}
+    if(!line){list=null;return;}
+    if(/^#{1,4}\s+/.test(line)){
+      list=null;
+      const heading=line.replace(/^#{1,4}\s+/,"");
+      if(heading==="Steps")orderedCount=0;
+      appendGuideBlock(root,"heading",heading);return;
+    }
+    const numbered=line.match(/^\d+\.\s+(.+)/),bullet=line.match(/^[-*]\s+(.+)/);
+    if(numbered||bullet){
+      const tag=numbered?"ol":"ul";
+      if(!list||list.tagName.toLowerCase()!==tag){
+        list=document.createElement(tag);
+        if(numbered&&orderedCount)list.start=orderedCount+1;
+        root.append(list);
+      }
+      list.append(executionText("li","",(numbered||bullet)[1]));
+      if(numbered)orderedCount+=1;
+      return;
+    }
+    list=null;appendGuideBlock(root,"paragraph",line);
+  });
+  flushCode();
+}
+function renderPartner(){
+  const root=document.getElementById("partner-next-task");
+  if(!root)return;
+  const task=currentNextTask();
+  root.replaceChildren();
+  if(!task){
+    root.append(executionText("div","partner-task-title","All listed tasks are complete"));
+    root.append(executionText("p","partner-boundary","Ask Codex to audit gates, risks, execution integrity, and the project log before treating the project as closed."));
+    return;
+  }
+  const titleRow=executionText("div","partner-title-row","");
+  const titleBlock=executionText("div","","");
+  titleBlock.append(executionText("div","partner-task-code",`${task.id} · ${task.phase}`));
+  titleBlock.append(executionText("div","partner-task-title",task.t));
+  titleBlock.append(executionText("div","partner-task-meta",`${task.o} · due Month ${task.due} (${MONTHS[task.due-1]}) · ${task.status==="progress"?"In progress":task.status==="blocked"?"Blocked":"To do"}`));
+  titleRow.append(titleBlock);
+  titleRow.append(executionText("span",`chip ${task.status}`,task.status==="progress"?"IN PROGRESS":task.status.toUpperCase()));
+  root.append(titleRow);
+  root.append(executionText("div","partner-criteria",task.d));
+  const guideRoot=executionText("div","partner-guide","");
+  renderGuideMarkdown(guideRoot,localTaskGuide(task));
+  root.append(guideRoot);
+  if(latestExecutionRecord?.snapshot){
+    const snapshot=latestExecutionRecord.snapshot;
+    root.append(executionText("div","partner-boundary",`Execution evidence available: commit ${(snapshot.repository?.commit_sha||"unknown").slice(0,10)}, ${snapshot.repository?.dirty?"uncommitted changes present":"working tree recorded clean"}, ${snapshot.quality?.run_count||0} runs. Codex should verify file-level evidence before changing task status.`));
+  }
+}
+async function copyTaskBrief(task=currentNextTask()){
+  if(!task)return;
+  const snapshot=latestExecutionRecord?.snapshot;
+  const executionLine=snapshot
+    ? `Execution snapshot: commit ${(snapshot.repository?.commit_sha||"unknown").slice(0,10)}; dirty=${Boolean(snapshot.repository?.dirty)}; protocol=${snapshot.protocol?.status||"unknown"}; runs=${snapshot.quality?.run_count||0}.`
+    : "No execution snapshot is currently available in the dashboard.";
+  const brief=[
+    "Act as my candid, file-aware research partner for the Machine Psychology Year 1 project.",
+    `Next task: ${task.id} — ${task.t}`,
+    `Owner: ${task.o}; due Month ${task.due} (${MONTHS[task.due-1]}); status: ${task.status}.`,
+    `Acceptance criteria: ${task.d}`,
+    executionLine,
+    "Inspect existing project evidence before proposing or making new work. Do not claim completion without evidence. Preserve preregistration and gate constraints. Start with explicit steps, include cd before shell commands, pressure-test my reasoning, and flag material risks with 🔴.",
+    task.o.includes("GK")?"Relevant execution repository: /Users/julian/Documents/autopsych.":"Relevant monitoring workspace: /Users/julian/Documents/Machine Cognition Web-Based Project Management Tool."
+  ].join("\n\n");
+  const status=document.getElementById("codex-copy-status");
+  try{
+    await navigator.clipboard.writeText(brief);
+    if(status)status.textContent="Copied. Return to this Codex project and paste the brief.";
+  }catch{
+    if(status){status.textContent="Copy failed. Select the next-task text and paste it into Codex manually.";status.style.color="var(--red)";}
+  }
 }
 
 /* ============ RENDER: DASHBOARD ============ */
@@ -739,9 +925,10 @@ function resetState(){
 }
 
 /* ============ MASTER RENDER ============ */
-function renderAll(){ renderDashboard(); renderTasks(); renderGates(); renderBudget(); renderRisks(); }
+function renderAll(){ renderDashboard(); renderPartner(); renderTasks(); renderGates(); renderBudget(); renderRisks(); }
 document.getElementById("f-status").addEventListener("change", renderTasks);
 document.getElementById("f-owner").addEventListener("change", renderTasks);
+document.getElementById("codex-copy-brief").addEventListener("click",()=>void copyTaskBrief());
 notesEl.value = S.notes || "";
 show("dashboard");
 window.CloudSync.initialize({

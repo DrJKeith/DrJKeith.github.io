@@ -140,11 +140,13 @@
   .gantt .gcell.on.p5{background:#5b21b6;} .gantt .gcell.on.p6{background:#B00020;}
   .gantt .gcell.today::after{content:''; position:absolute; top:-3px; bottom:-3px; left:var(--tx,50%); width:2px; background:var(--red);}
   .btnrow{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;}
-  button.act{font-family:inherit; font-size:13px; padding:7px 14px; border:1px solid var(--navy); background:#fff; color:var(--navy); border-radius:6px; cursor:pointer;}
-  button.act:hover{background:var(--navy); color:#fff;}
+  button.act,a.act{font-family:inherit; font-size:13px; padding:7px 14px; border:1px solid var(--navy); background:#fff; color:var(--navy); border-radius:6px; cursor:pointer; text-decoration:none; display:inline-block;}
+  button.act:hover,a.act:hover{background:var(--navy); color:#fff;}
   button.act.warn{border-color:var(--red); color:var(--red);}
   button.act.warn:hover{background:var(--red); color:#fff;}
   .note{font-size:12.5px; color:var(--gray); font-style:italic;}
+  .document-actions{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 14px;}
+  .document-frame{display:block; width:100%; height:min(78vh,1000px); min-height:620px; border:1px solid var(--line); border-radius:6px; background:#fff;}
   .rubricline{display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--line); flex-wrap:wrap;}
   .rubricline:last-child{border-bottom:none;}
   .rubricline .rl-name{flex:1; min-width:220px; font-size:14px;}
@@ -165,7 +167,7 @@
   <div class="header-row">
     <div class="header-title">
       <h1>MACHINE PSYCHOLOGY · Year 1 Project Manager</h1>
-      <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · built from Research Plan v4</div>
+      <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · Research Plan v5</div>
     </div>
     <div class="cloudbar" aria-label="Cloud synchronization controls">
       <span id="cloud-status" data-tone="working" role="status">Connecting…</span>
@@ -271,6 +273,22 @@
   </div>
 </div>
 
+<!-- ================= RESEARCH PLAN ================= -->
+<div class="view" id="view-plan">
+  <h2>Research Plan</h2>
+  <div class="card">
+    <p><b>Version 5 · July 16, 2026</b></p>
+    <p class="note" style="margin-top:6px;">Hosted project-manager edition. It preserves the Version 4 scientific plan and adds document control; no change has been made to the aims, design, models, budget, timeline, gates, or release commitments.</p>
+    <div class="document-actions">
+      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v5.pdf" target="_blank" rel="noopener">Open PDF</a>
+      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v5.docx" download>Download Word document</a>
+    </div>
+    <iframe class="document-frame" src="documents/Machine_Psychology_Year1_Research_Plan_v5.pdf#view=FitH" title="Machine Psychology Year 1 Research Plan, Version 5">
+      <a href="documents/Machine_Psychology_Year1_Research_Plan_v5.pdf">Open the research plan PDF.</a>
+    </iframe>
+  </div>
+</div>
+
 <!-- ================= TASKS ================= -->
 <div class="view" id="view-tasks">
   <div class="filters">
@@ -308,7 +326,7 @@
 <!-- ================= BUDGET ================= -->
 <div class="view" id="view-budget">
   <h2>Budget Tracker</h2>
-  <p class="note">Budgeted figures are from the v4 plan (verified June 2026 batch rates). Enter actual spend as invoices land; re-verify all API rates immediately before launch (OpenAI batch rate especially).</p>
+  <p class="note">Budgeted figures are from the v5 plan (verified June 2026 batch rates). Enter actual spend as invoices land; re-verify all API rates immediately before launch (OpenAI batch rate especially).</p>
   <div class="card"><table id="budgettable"></table></div>
   <div class="grid c3">
     <div class="card kpi"><div class="num" id="b-spent">–</div><div class="lbl">SPENT</div></div>
@@ -344,7 +362,7 @@
     </div>
     <div class="note">Signed-in progress is saved automatically to your private Supabase record and remains available as a local browser backup. Export JSON periodically for an additional offline backup.</div>
   </div>
-  <h2>Key Numbers (from v4, for quick reference)</h2>
+  <h2>Key Numbers (from v5, for quick reference)</h2>
   <div class="card"><table>
     <tr><th>Quantity</th><th>Value</th></tr>
     <tr><td>Study 0 calls</td><td>9,000 (500 per model per rep × 6 × 3)</td></tr>
@@ -367,7 +385,7 @@
 <script src="./cloud-sync.js?v=codex-research-partner-1"></script>
 <script>
 "use strict";
-/* ============ PROJECT DATA (from Research Plan v4) ============ */
+/* ============ PROJECT DATA (from Research Plan v5) ============ */
 const MONTHS = ["Jul 26","Aug 26","Sep 26","Oct 26","Nov 26","Dec 26","Jan 27","Feb 27","Mar 27","Apr 27","May 27","Jun 27"];
 const PROJECT_START = new Date(2026,6,1), PROJECT_END = new Date(2027,5,30);
 
@@ -475,7 +493,7 @@ function persistLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }cat
 function save(){ persistLocal(); window.CloudSync?.queueSave(); }
 
 /* ============ NAV ============ */
-const VIEWS = [["dashboard","Dashboard"],["partner","Research Partner"],["tasks","Tasks"],["gates","Gates & Rubric"],["budget","Budget"],["risks","Risks"],["data","Log & Data"]];
+const VIEWS = [["dashboard","Dashboard"],["partner","Research Partner"],["plan","Research Plan"],["tasks","Tasks"],["gates","Gates & Rubric"],["budget","Budget"],["risks","Risks"],["data","Log & Data"]];
 const nav = document.getElementById("nav");
 VIEWS.forEach(([id,label],i)=>{
   const b = document.createElement("button");

@@ -167,7 +167,7 @@
   <div class="header-row">
     <div class="header-title">
       <h1>MACHINE PSYCHOLOGY · Year 1 Project Manager</h1>
-      <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · Research Plan v5</div>
+      <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · Research Plan v8</div>
     </div>
     <div class="cloudbar" aria-label="Cloud synchronization controls">
       <span id="cloud-status" data-tone="working" role="status">Connecting…</span>
@@ -277,14 +277,14 @@
 <div class="view" id="view-plan">
   <h2>Research Plan</h2>
   <div class="card">
-    <p><b>Version 5 · July 16, 2026</b></p>
-    <p class="note" style="margin-top:6px;">Hosted project-manager edition. It preserves the Version 4 scientific plan and adds document control; no change has been made to the aims, design, models, budget, timeline, gates, or release commitments.</p>
+    <p><b>Version 8 · July 21, 2026</b></p>
+    <p class="note" style="margin-top:6px;">Version 8 adopts direct Wolfram Alpha website/API use as a logged family-level computational cross-check. The Wolfram GPT is prohibited; final stems remain private, local recomputation is required, and automated use awaits written licensing clearance.</p>
     <div class="document-actions">
-      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v5.pdf" target="_blank" rel="noopener">Open PDF</a>
-      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v5.docx" download>Download Word document</a>
+      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v8.pdf" target="_blank" rel="noopener">Open PDF</a>
+      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v8.docx" download>Download Word document</a>
     </div>
-    <iframe class="document-frame" src="documents/Machine_Psychology_Year1_Research_Plan_v5.pdf#view=FitH" title="Machine Psychology Year 1 Research Plan, Version 5">
-      <a href="documents/Machine_Psychology_Year1_Research_Plan_v5.pdf">Open the research plan PDF.</a>
+    <iframe class="document-frame" src="documents/Machine_Psychology_Year1_Research_Plan_v8.pdf#view=FitH" title="Machine Psychology Year 1 Research Plan, Version 8">
+      <a href="documents/Machine_Psychology_Year1_Research_Plan_v8.pdf">Open the research plan PDF.</a>
     </iframe>
   </div>
 </div>
@@ -326,7 +326,7 @@
 <!-- ================= BUDGET ================= -->
 <div class="view" id="view-budget">
   <h2>Budget Tracker</h2>
-  <p class="note">Budgeted figures are from the v5 plan (verified June 2026 batch rates). Enter actual spend as invoices land; re-verify all API rates immediately before launch (OpenAI batch rate especially).</p>
+  <p class="note">Budgeted figures are from the v8 plan (verified June 2026 batch rates). Enter actual spend as invoices land; re-verify all API rates immediately before launch (OpenAI batch rate especially).</p>
   <div class="card"><table id="budgettable"></table></div>
   <div class="grid c3">
     <div class="card kpi"><div class="num" id="b-spent">–</div><div class="lbl">SPENT</div></div>
@@ -362,7 +362,7 @@
     </div>
     <div class="note">Signed-in progress is saved automatically to your private Supabase record and remains available as a local browser backup. Export JSON periodically for an additional offline backup.</div>
   </div>
-  <h2>Key Numbers (from v5, for quick reference)</h2>
+  <h2>Key Numbers (from v8, for quick reference)</h2>
   <div class="card"><table>
     <tr><th>Quantity</th><th>Value</th></tr>
     <tr><td>Study 0 calls</td><td>9,000 (500 per model per rep × 6 × 3)</td></tr>
@@ -385,7 +385,7 @@
 <script src="./cloud-sync.js?v=codex-research-partner-1"></script>
 <script>
 "use strict";
-/* ============ PROJECT DATA (from Research Plan v5) ============ */
+/* ============ PROJECT DATA (from Research Plan v8) ============ */
 const MONTHS = ["Jul 26","Aug 26","Sep 26","Oct 26","Nov 26","Dec 26","Jan 27","Feb 27","Mar 27","Apr 27","May 27","Jun 27"];
 const PROJECT_START = new Date(2026,6,1), PROJECT_END = new Date(2027,5,30);
 
@@ -394,8 +394,8 @@ const PHASES = [
   {id:"P1", t:"Build AutoPsych core pipeline", o:"GK", due:2, d:"Orchestration, batch submission, and the Layer D logging schema: model version string, timestamp, prompt hash, full response text, parsed values, scores, API status, and seed/system fingerprint where exposed. Done = a dry run writes complete records for 100% of mock calls."},
   {id:"P2", t:"Build parser + scorer modules", o:"GK", due:2, d:"Numeric extraction across formats (integers, decimals, scientific notation), unit conversion, refusal routing, and flagging of impossible confidences (<0, >100) and inverted intervals. Done = passes code review against the preregistered handling rules."},
   {id:"P3", t:"Create synthetic unit test library (500 items)", o:"GK", due:2, d:"Known ground-truth responses including malformed JSON, missing fields, nonnumeric text, impossible values, refusals, and adversarial formatting (Unicode, embedded instructions, whitespace). This library ships in the Study 0 preregistration."},
-  {id:"P4", t:"Generate 250 candidate Fermi items + metadata sheets", o:"JK", due:2, d:"Every item: unique supplied parameters PLUS at least one bridge quantity estimated from world knowledge (items fully determined by supplied inputs are excluded as arithmetic). Metadata: domain, formula, bridge quantities with documented reference ranges and sources, ground-truth point + plausible interval, log uncertainty width. Exclusion: researcher ground-truth disagreement > 0.5 log units."},
-  {id:"P5", t:"Contamination-risk scoring of all candidates", o:"JK", due:2, d:"Exact-match Google + Bing searches per stem; exclude/redesign items whose top-3 results return the answer; screen canonical templates (piano tuners etc.); assign Low/Medium/High rating to every retained item. Remember: search is a proxy, parameterization is the real defense."},
+  {id:"P4", t:"Build 25 Fermi families + 250 candidate variants", o:"JK", due:2, d:"Create 25 template families across the five registered domains and 10 provisional parameterizations per family. One AI constructs each reference-benchmark packet; a blind different-vendor AI challenges and independently recomputes it; deterministic checks verify units, arithmetic, intervals, and propagation. Use the official Wolfram Alpha website/API only as a logged family-level computational cross-check; the Wolfram GPT is prohibited, final stems are not submitted, and automation awaits licensing clearance. A human verifies sources and construct validity for every retained family; a second human adjudicates all disagreements/high-risk families and audits a preregistered random sample of agreements. Only Class A externally checkable or Class B constructed-and-triangulated families are eligible."},
+  {id:"P5", t:"Contamination-risk scoring of all candidates", o:"JK", due:2, d:"Exact-match Google + Bing searches per stem; exclude/redesign items whose top-3 results return the answer; screen canonical templates (piano tuners etc.); assign Low/Medium/High rating to every retained item. Study 1 runs are text-only and tool-disabled: browsing, web search, retrieval plugins, and other external tools are prohibited. Remember: search is a proxy, parameterization is the real defense."},
   {id:"P6", t:"Draft Study 0 preregistration", o:"JK", due:2, d:"Full acceptance rubric with thresholds, all prompt templates, model version strings, per-provider decoding policy, the 500-item synthetic library, and all scoring procedures. Study 0 items are included verbatim (they are not contamination-sensitive)."},
   {id:"P7", t:"File Study 0 preregistration on OSF", o:"JK", due:2, ms:true, d:"Gate 2. No Study 0 API calls before the timestamp."},
   {id:"P8", t:"Freeze model list (Gate 1)", o:"JK+GK", due:2, gate:true, d:"Two weeks before Study 0 data collection. Re-evaluate the open-weight entry against current releases under the preregistered criterion: most widely deployed open-weight instruct model with stable hosted inference. Keep one small + one capable model per proprietary family."},
@@ -469,7 +469,7 @@ const BUDGET = [
  {id:"B1", name:"Study 0 API costs", amt:5.16},
  {id:"B2", name:"Study 1 API costs (Tracks A+B)", amt:37.38},
  {id:"B3", name:"Calibration + Track B tuning pilots", amt:8.00},
- {id:"B4", name:"Wolfram Alpha API (ground-truth verification)", amt:100.00},
+ {id:"B4", name:"Wolfram Alpha instrument/license allowance (pending terms)", amt:100.00},
  {id:"B5", name:"Parser debugging and retries (~15% overhead)", amt:7.50},
  {id:"B6", name:"Exploratory analyses beyond prereg", amt:50.00},
  {id:"B7", name:"Sentinel reruns + stability checks", amt:25.00},

@@ -278,7 +278,7 @@
   <h2>Research Plan</h2>
   <div class="card">
     <p><b>Version 10 · July 22, 2026</b></p>
-    <p class="note" style="margin-top:6px;">Version 10 distinguishes 25 Fermi task families, six model configurations, five Track A elicitation conditions, and three separate Track B binary formats. This is a terminology clarification; the design, call counts, gates, routing controls, and budget authorization are unchanged.</p>
+    <p class="note" style="margin-top:6px;">Version 10 distinguishes 25 Fermi task families, six model configurations, five Track A elicitation conditions, and three separate Track B binary formats. This update also replaces contemplative-science framing and its mindfulness/meditation citation with cognitive-science framing and a registered-replication reference; the design, call counts, gates, routing controls, and budget authorization are unchanged.</p>
     <div class="document-actions">
       <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v10.pdf" target="_blank" rel="noopener">Open PDF</a>
       <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v10.docx" download>Download Word document</a>
@@ -486,7 +486,7 @@ const COUNTERS = [
 /* ============ STATE ============ */
 const KEY = "mp_year1_pm_v1";
 const STATE_VERSION = 2;
-const RECONCILIATION_NOTE = "2026-07-22 — Preparation-task reconciliation: P1 Done (100/100 mock calls produced complete terminal records and manifests reject overwrite); P2 Done (parser/scorer reviewed against handling rules, including invalid confidence and inverted-interval rejection); P3 Done (500 deterministic synthetic cases meet the registered parser target); P4 In progress (25-family draft roster exists, but source packets, independent challenges, and human review remain incomplete). Verification: 22 AutoPsych tests passed. Protocol remains draft-not-preregistered.";
+const RECONCILIATION_NOTE = "2026-07-22 — Preparation-task reconciliation: P1 Done (100/100 mock calls produced complete terminal records and manifests reject overwrite); P2 Done (parser/scorer reviewed against handling rules, including invalid confidence and inverted-interval rejection); P3 Done (500 deterministic synthetic cases meet the registered parser target); P4 In progress (25-family draft roster exists; PHY-01 now has a frozen constructor, preserved blind Fable 5 challenge, post-freeze discrepancy resolution, passing family-level deterministic checks, and a prepared human-review packet. PHY-01 is not retained: first- and second-human review remain pending, numerical propagation is blocked until final parameters exist, and the other 24 family packets remain incomplete). Verification: 23 AutoPsych tests passed. Protocol remains draft-not-preregistered; runs=0.";
 let S = load();
 let latestExecutionRecord = null;
 function blank(){ return {stateVersion:STATE_VERSION, tasks:{P1:"done",P2:"done",P3:"done",P4:"progress"}, gates:{}, rubric:{}, budget:{}, risks:{}, counters:{}, notes:RECONCILIATION_NOTE, collapsed:{}}; }

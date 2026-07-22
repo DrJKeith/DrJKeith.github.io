@@ -167,7 +167,7 @@
   <div class="header-row">
     <div class="header-title">
       <h1>MACHINE PSYCHOLOGY · Year 1 Project Manager</h1>
-      <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · Research Plan v8</div>
+      <div class="sub">Functional Metacognitive Monitoring in LLMs · Keith &amp; Keith · July 1, 2026 – June 30, 2027 · Research Plan v9</div>
     </div>
     <div class="cloudbar" aria-label="Cloud synchronization controls">
       <span id="cloud-status" data-tone="working" role="status">Connecting…</span>
@@ -277,14 +277,14 @@
 <div class="view" id="view-plan">
   <h2>Research Plan</h2>
   <div class="card">
-    <p><b>Version 8 · July 21, 2026</b></p>
-    <p class="note" style="margin-top:6px;">Version 8 adopts direct Wolfram Alpha website/API use as a logged family-level computational cross-check. The Wolfram GPT is prohibited; final stems remain private, local recomputation is required, and automated use awaits written licensing clearance.</p>
+    <p><b>Version 9 · July 22, 2026</b></p>
+    <p class="note" style="margin-top:6px;">Version 9 aligns the plan with six current Anthropic/OpenAI configurations routed through OpenRouter. All remain pending integration tests; concrete slugs, one frozen upstream route, no fallback or rerouting, route metadata, and current pricing verification are required before Gate 1.</p>
     <div class="document-actions">
-      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v8.pdf" target="_blank" rel="noopener">Open PDF</a>
-      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v8.docx" download>Download Word document</a>
+      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v9.pdf" target="_blank" rel="noopener">Open PDF</a>
+      <a class="act" href="documents/Machine_Psychology_Year1_Research_Plan_v9.docx" download>Download Word document</a>
     </div>
-    <iframe class="document-frame" src="documents/Machine_Psychology_Year1_Research_Plan_v8.pdf#view=FitH" title="Machine Psychology Year 1 Research Plan, Version 8">
-      <a href="documents/Machine_Psychology_Year1_Research_Plan_v8.pdf">Open the research plan PDF.</a>
+    <iframe class="document-frame" src="documents/Machine_Psychology_Year1_Research_Plan_v9.pdf#view=FitH" title="Machine Psychology Year 1 Research Plan, Version 9">
+      <a href="documents/Machine_Psychology_Year1_Research_Plan_v9.pdf">Open the research plan PDF.</a>
     </iframe>
   </div>
 </div>
@@ -326,7 +326,7 @@
 <!-- ================= BUDGET ================= -->
 <div class="view" id="view-budget">
   <h2>Budget Tracker</h2>
-  <p class="note">Budgeted figures are from the v8 plan (verified June 2026 batch rates). Enter actual spend as invoices land; re-verify all API rates immediately before launch (OpenAI batch rate especially).</p>
+  <p class="note">Version 9 retains the $850 direct-cost ceiling, but the Study 0 and Study 1 API amounts are provisional reserves. Re-verify OpenRouter, pinned-upstream, reasoning-token, and caching or batch terms before Gate 1.</p>
   <div class="card"><table id="budgettable"></table></div>
   <div class="grid c3">
     <div class="card kpi"><div class="num" id="b-spent">–</div><div class="lbl">SPENT</div></div>
@@ -334,7 +334,7 @@
     <div class="card kpi"><div class="num">$1,000</div><div class="lbl">YEAR 2 RESERVE (UNTOUCHED)</div></div>
   </div>
   <div class="card"><b>Standing reminders</b>
-    <div style="font-size:13.5px; margin-top:6px;">Reasoning-class models (GPT-5.4) may bill internal reasoning tokens as output tokens: keep reasoning effort pinned to minimum and watch the per-call output token counts in the logs. The contingency line covers up to a threefold output-token overrun on the two OpenAI models. Anthropic and Google batch discounts (~50%) were verified; Together.ai has no batch discount.</div></div>
+    <div style="font-size:13.5px; margin-top:6px;">All six model routes are candidates pending integration tests. Freeze one upstream route per concrete slug, prohibit fallback and automatic rerouting, log requested and returned identifiers, and replace the provisional API reserves with current verified costs before Gate 1.</div></div>
 </div>
 
 <!-- ================= RISKS ================= -->
@@ -385,7 +385,7 @@
 <script src="./cloud-sync.js?v=codex-research-partner-1"></script>
 <script>
 "use strict";
-/* ============ PROJECT DATA (from Research Plan v8) ============ */
+/* ============ PROJECT DATA (from Research Plan v9) ============ */
 const MONTHS = ["Jul 26","Aug 26","Sep 26","Oct 26","Nov 26","Dec 26","Jan 27","Feb 27","Mar 27","Apr 27","May 27","Jun 27"];
 const PROJECT_START = new Date(2026,6,1), PROJECT_END = new Date(2027,5,30);
 
@@ -396,10 +396,10 @@ const PHASES = [
   {id:"P3", t:"Create synthetic unit test library (500 items)", o:"GK", due:2, d:"Known ground-truth responses including malformed JSON, missing fields, nonnumeric text, impossible values, refusals, and adversarial formatting (Unicode, embedded instructions, whitespace). This library ships in the Study 0 preregistration."},
   {id:"P4", t:"Build 25 Fermi families + 250 candidate variants", o:"JK", due:2, d:"Create 25 template families across the five registered domains and 10 provisional parameterizations per family. One AI constructs each reference-benchmark packet; a blind different-vendor AI challenges and independently recomputes it; deterministic checks verify units, arithmetic, intervals, and propagation. Use the official Wolfram Alpha website/API only as a logged family-level computational cross-check; the Wolfram GPT is prohibited, final stems are not submitted, and automation awaits licensing clearance. A human verifies sources and construct validity for every retained family; a second human adjudicates all disagreements/high-risk families and audits a preregistered random sample of agreements. Only Class A externally checkable or Class B constructed-and-triangulated families are eligible."},
   {id:"P5", t:"Contamination-risk scoring of all candidates", o:"JK", due:2, d:"Exact-match Google + Bing searches per stem; exclude/redesign items whose top-3 results return the answer; screen canonical templates (piano tuners etc.); assign Low/Medium/High rating to every retained item. Study 1 runs are text-only and tool-disabled: browsing, web search, retrieval plugins, and other external tools are prohibited. Remember: search is a proxy, parameterization is the real defense."},
-  {id:"P6", t:"Draft Study 0 preregistration", o:"JK", due:2, d:"Full acceptance rubric with thresholds, all prompt templates, model version strings, per-provider decoding policy, the 500-item synthetic library, and all scoring procedures. Study 0 items are included verbatim (they are not contamination-sensitive)."},
+  {id:"P6", t:"Draft Study 0 preregistration", o:"JK", due:2, d:"Full acceptance rubric with thresholds, all prompt templates, concrete model and route identifiers, per-configuration route and decoding policy, the 500-item synthetic library, and all scoring procedures. Study 0 items are included verbatim (they are not contamination-sensitive)."},
   {id:"P7", t:"File Study 0 preregistration on OSF", o:"JK", due:2, ms:true, d:"Gate 2. No Study 0 API calls before the timestamp."},
-  {id:"P8", t:"Freeze model list (Gate 1)", o:"JK+GK", due:2, gate:true, d:"Two weeks before Study 0 data collection. Re-evaluate the open-weight entry against current releases under the preregistered criterion: most widely deployed open-weight instruct model with stable hosted inference. Keep one small + one capable model per proprietary family."},
-  {id:"P9", t:"Re-verify API pricing and batch rates", o:"GK", due:2, d:"Confirm OpenAI batch discount rate (changes without notice), Anthropic/Google ~50% batch rates, Together.ai standard rates. Update the budget view if anything moved."},
+  {id:"P8", t:"Validate and freeze model routes (Gate 1)", o:"JK+GK", due:2, gate:true, d:"Integration-test all six Anthropic/OpenAI candidates. Freeze each concrete OpenRouter slug to one upstream route; prohibit fallback and automatic rerouting; verify route metadata capture. Google and open-weight systems remain external replication unless a later versioned change adds them."},
+  {id:"P9", t:"Re-verify route availability and API pricing", o:"GK", due:2, d:"Verify current OpenRouter and pinned-upstream availability, input/output and reasoning-token pricing, and any caching or batch terms. Replace provisional reserve figures before Gate 1; revise the plan again if the authorization ceiling changes."},
  ]},
  {id:"study0", name:"Study 0", m:[2,4], cls:"p2", tasks:[
   {id:"S1", t:"Layer A: run synthetic unit tests", o:"GK", due:3, d:"Parser against the 500-item library BEFORE any real API call. Threshold ≥ 98%. Enter the result in the Gates tab."},
@@ -446,7 +446,7 @@ const PHASES = [
 ];
 
 const GATES = [
- {id:"G1", name:"Gate 1 · Model list frozen", when:"2 weeks before Study 0 data", crit:"Open-weight entry re-evaluated; one small + one capable per proprietary family; versions pinned where supported.", manual:true},
+ {id:"G1", name:"Gate 1 · Model routes frozen", when:"2 weeks before Study 0 data", crit:"All six candidates pass integration tests; concrete slugs and one upstream route are frozen; fallback/rerouting is disabled; route metadata and current costs are verified.", manual:true},
  {id:"G2", name:"Gate 2 · Study 0 preregistered", when:"Before any Study 0 API call", crit:"OSF timestamp precedes first real call. Rubric, prompts, decoding policy, synthetic library all in the filing.", manual:true},
  {id:"G3", name:"Gate 3 · Study 0 acceptance rubric", when:"End of Study 0", crit:"Auto-evaluated below from your measured values.", manual:false},
  {id:"G4", name:"Gate 4 · Study 1 preregistered", when:"Before item generation", crit:"Protocol public; items withheld by design (two-stage mechanism).", manual:true},
@@ -459,15 +459,15 @@ const RISKS = [
  {id:"R1", name:"§7.1 AutoPsych validation fails (< 2/3 Layer C replications)", resp:"Audit prompt templates vs originals; run exact original stimuli where permitted; distinguish model drift from platform error. 30-day remediation window. Systematic non-replication = publishable diagnostic finding."},
  {id:"R2", name:"§7.2 Item contamination in a substantial minority", resp:"Sensitivity analyses excluding high-risk items; expected exclusion ≤ 10%. Parameterization is the primary defense."},
  {id:"R3", name:"§7.3 All models cluster at AUROC2 ≈ 0.50", resp:"Reframe around uniform surface-confidence finding (strong H1 evidence); investigate within-model domain variation as secondary."},
- {id:"R4", name:"§7.4 Model-version drift during collection", resp:"Pinned versions where supported; sentinel first/last day; rerun affected runs immediately on detection."},
+ {id:"R4", name:"§7.4 Model-route drift during collection", resp:"Log requested/returned identifiers and upstream metadata; prohibit fallback/rerouting; run sentinels first/last day; pause collection if the frozen route cannot be maintained."},
  {id:"R5", name:"§7.5 Parse failures > 15% in a cell", resp:"Human-coded stratified subsample for that cell; if insufficient, exclude cell and note absence. Bounding sensitivity analysis applies regardless."},
  {id:"R6", name:"§7.6 Reasoning-token cost overrun / decoding support change", resp:"Reasoning effort pinned to minimum + logged per call; contingency covers 3x output overrun on OpenAI models; if provider removes the setting, rerun affected cells at new minimum and disclose."},
  {id:"R7", name:"§7.7 Track B accuracy above ceiling despite tuning", resp:"One re-tune + rerun per format; if still outside 55–92%, declare cell non-estimable under the preregistered rule and report as a finding."},
 ];
 
 const BUDGET = [
- {id:"B1", name:"Study 0 API costs", amt:5.16},
- {id:"B2", name:"Study 1 API costs (Tracks A+B)", amt:37.38},
+ {id:"B1", name:"Study 0 API reserve (reprice before freeze)", amt:5.16},
+ {id:"B2", name:"Study 1 API reserve (reprice before freeze)", amt:37.38},
  {id:"B3", name:"Calibration + Track B tuning pilots", amt:8.00},
  {id:"B4", name:"Wolfram Alpha instrument/license allowance (pending terms)", amt:100.00},
  {id:"B5", name:"Parser debugging and retries (~15% overhead)", amt:7.50},

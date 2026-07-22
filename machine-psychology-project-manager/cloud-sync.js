@@ -106,7 +106,12 @@
     revision = Number(data.revision) || 0;
     dirty = false;
     setConflictVisible(false);
-    app.setState(data.state || {});
+    const migrated = app.setState(data.state || {});
+    if (migrated) {
+      dirty = true;
+      await saveNow();
+      return;
+    }
     setStatus(formatSavedTime(data.updated_at), "ok");
   }
 

@@ -485,10 +485,27 @@ const COUNTERS = [
 
 /* ============ STATE ============ */
 const KEY = "mp_year1_pm_v1";
+const STATE_VERSION = 2;
+const RECONCILIATION_NOTE = "2026-07-22 — Preparation-task reconciliation: P1 Done (100/100 mock calls produced complete terminal records and manifests reject overwrite); P2 Done (parser/scorer reviewed against handling rules, including invalid confidence and inverted-interval rejection); P3 Done (500 deterministic synthetic cases meet the registered parser target); P4 In progress (25-family draft roster exists, but source packets, independent challenges, and human review remain incomplete). Verification: 22 AutoPsych tests passed. Protocol remains draft-not-preregistered.";
 let S = load();
 let latestExecutionRecord = null;
-function blank(){ return {tasks:{}, gates:{}, rubric:{}, budget:{}, risks:{}, counters:{}, notes:"", collapsed:{}}; }
-function load(){ try{ const raw = localStorage.getItem(KEY); return raw ? Object.assign(blank(), JSON.parse(raw)) : blank(); }catch(e){ return blank(); } }
+function blank(){ return {stateVersion:STATE_VERSION, tasks:{P1:"done",P2:"done",P3:"done",P4:"progress"}, gates:{}, rubric:{}, budget:{}, risks:{}, counters:{}, notes:RECONCILIATION_NOTE, collapsed:{}}; }
+function normalizeState(value){
+  const source=value&&typeof value==="object"?value:{};
+  const previousVersion=Number(source.stateVersion)||0;
+  const state=Object.assign(blank(),source);
+  state.tasks=Object.assign({},source.tasks||{});
+  let migrated=previousVersion<STATE_VERSION;
+  if(migrated){
+    Object.assign(state.tasks,{P1:"done",P2:"done",P3:"done"});
+    if(state.tasks.P4!=="done"&&state.tasks.P4!=="blocked")state.tasks.P4="progress";
+    const existing=String(source.notes||"").trim();
+    state.notes=existing.includes("Preparation-task reconciliation")?existing:[existing,RECONCILIATION_NOTE].filter(Boolean).join("\n\n");
+  }
+  state.stateVersion=STATE_VERSION;
+  return {state,migrated};
+}
+function load(){ try{ const raw = localStorage.getItem(KEY); return raw ? normalizeState(JSON.parse(raw)).state : blank(); }catch(e){ return blank(); } }
 function persistLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 function save(){ persistLocal(); window.CloudSync?.queueSave(); }
 
@@ -623,6 +640,23 @@ function localTaskGuide(task){
     "5. If evidence already satisfies the criterion, log the commands and artifact locations, then mark P1 Done. Otherwise keep it In progress and record the smallest concrete gap list before changing code.",
     "### Done when",
     "A dry run produces complete records for 100% of intended mock calls, the evidence is logged, and the dashboard status matches that evidence."
+  ].join("\n");
+  if(task.id==="P4") return [
+    "### Objective",
+    "Finish validation of the existing 25-family draft roster; do not recreate the roster or confuse task families with model configurations or elicitation conditions.",
+    "### Current evidence",
+    "The AutoPsych repository contains 25 draft Fermi families and 10 parameterization slots per family (250 candidates total). Structural validation passes, but the roster is explicitly unreviewed.",
+    "### Steps",
+    "1. Open the execution repository:",
+    "```",
+    "cd \"/Users/julian/Documents/autopsych\"",
+    "```",
+    "2. Review the existing family roster and benchmark-validation instructions before drafting anything new.",
+    "3. Complete source packets, blind different-vendor challenges, deterministic arithmetic/unit checks, and the required human source-and-construct review.",
+    "4. Keep final confirmatory stems private and do not start automated Wolfram Alpha use without written licensing clearance.",
+    "5. Record family-level dispositions and evidence; retain P4 as In progress until every retained family clears the required gates.",
+    "### Done when",
+    "All 25 families have auditable benchmark packets and required reviews, 250 provisional candidate slots are accounted for, and only eligible Class A or B families remain."
   ].join("\n");
   const ownerInstruction=task.o==="GK"
     ? "Because this is Gabriel-owned, use Codex first to verify evidence and define Julian's handoff or acceptance check; do not silently assume ownership."
@@ -934,7 +968,7 @@ function exportState(){
 function importState(inp){
   const f = inp.files[0]; if(!f) return;
   const r = new FileReader();
-  r.onload = ()=>{ try{ S = Object.assign(blank(), JSON.parse(r.result)); save(); notesEl.value = S.notes||""; renderAll(); alert("Progress imported."); }catch(e){ alert("Could not read that file."); } };
+  r.onload = ()=>{ try{ S = normalizeState(JSON.parse(r.result)).state; save(); notesEl.value = S.notes||""; renderAll(); alert("Progress imported."); }catch(e){ alert("Could not read that file."); } };
   r.readAsText(f);
   inp.value = "";
 }
@@ -952,10 +986,12 @@ show("dashboard");
 window.CloudSync.initialize({
   getState: ()=>JSON.parse(JSON.stringify(S)),
   setState: nextState=>{
-    S = Object.assign(blank(), nextState || {});
+    const normalized = normalizeState(nextState || {});
+    S = normalized.state;
     persistLocal();
     notesEl.value = S.notes || "";
     renderAll();
+    return normalized.migrated;
   },
   setExecutionStatus: renderExecutionStatus
 });

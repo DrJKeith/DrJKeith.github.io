@@ -485,8 +485,8 @@ const COUNTERS = [
 
 /* ============ STATE ============ */
 const KEY = "mp_year1_pm_v1";
-const STATE_VERSION = 2;
-const RECONCILIATION_NOTE = "2026-07-26 — Preparation-task reconciliation: P1 Done (100/100 mock calls produced complete terminal records and manifests reject overwrite); P2 Done (parser/scorer reviewed against handling rules, including invalid confidence and inverted-interval rejection); P3 Done (500 deterministic synthetic cases meet the registered parser target); P4 In progress (25-family draft roster exists; PHY-01 now has a frozen constructor, preserved blind Fable 5 challenge, post-freeze discrepancy resolution, passing family-level deterministic checks, and a prepared human-review packet. PHY-01 is not retained: first- and second-human review remain pending, numerical propagation is blocked until final parameters exist, and the other 24 family packets remain incomplete). Wolfram API correspondence supports individual logged non-commercial cross-checks up to 2,000 queries/month; no caching or training on results, and no automated bulk querying. Verification: 23 AutoPsych tests passed. Protocol remains draft-not-preregistered; runs=0.";
+const STATE_VERSION = 3;
+const RECONCILIATION_NOTE = "2026-07-31 — Preparation-task reconciliation: P1 Done (100/100 mock calls produced complete terminal records and manifests reject overwrite); P2 Done (parser/scorer reviewed against handling rules, including invalid confidence and inverted-interval rejection); P3 Done (500 deterministic synthetic cases meet the registered parser target); P4 In progress (25-family draft roster exists. PHY-01 has a frozen constructor, preserved blind Fable 5 challenge, post-freeze discrepancy resolution, passing deterministic checks, and AI-assisted source-verification guidance. S1, S2, and S4-S8 are supported with stated limits; S3 remains materially unclear because the bound NREL material mixes first-year and degradation-adjusted language. The provisional gate recommendation is return for revision unless S3 is resolved. Neither human review is complete, no Wolfram query has been made for PHY-01, numerical propagation remains blocked, and the other 24 family packets remain incomplete). Wolfram correspondence permits individually researcher-initiated, logged non-commercial API cross-checks up to 2,000 queries/month, with no caching or training; automated bulk querying, final stems, and final numerical parameters remain out of scope. Verification: locked installed-package rebuild succeeded and all 23 AutoPsych tests passed. Protocol remains draft-not-preregistered; runs=0.";
 let S = load();
 let latestExecutionRecord = null;
 function blank(){ return {stateVersion:STATE_VERSION, tasks:{P1:"done",P2:"done",P3:"done",P4:"progress"}, gates:{}, rubric:{}, budget:{}, risks:{}, counters:{}, notes:RECONCILIATION_NOTE, collapsed:{}}; }
@@ -500,7 +500,8 @@ function normalizeState(value){
     Object.assign(state.tasks,{P1:"done",P2:"done",P3:"done"});
     if(state.tasks.P4!=="done"&&state.tasks.P4!=="blocked")state.tasks.P4="progress";
     const existing=String(source.notes||"").trim();
-    state.notes=existing.includes("Preparation-task reconciliation")?existing:[existing,RECONCILIATION_NOTE].filter(Boolean).join("\n\n");
+    const withoutPriorReconciliation=existing.replace(/(?:^|\n\n)\d{4}-\d{2}-\d{2} — Preparation-task reconciliation:[\s\S]*?(?=\n\n|$)/g,"").trim();
+    state.notes=[withoutPriorReconciliation,RECONCILIATION_NOTE].filter(Boolean).join("\n\n");
   }
   state.stateVersion=STATE_VERSION;
   return {state,migrated};
@@ -644,16 +645,18 @@ function localTaskGuide(task){
   if(task.id==="P4") return [
     "### Objective",
     "Finish validation of the existing 25-family draft roster; do not recreate the roster or confuse task families with model configurations or elicitation conditions.",
+    "### Recommended ChatGPT settings",
+    "Use Sol with high effort at standard speed for source and construct reasoning. This is the quality-conscious choice for consequential scientific judgment. Use Terra with medium effort at fast speed only for clerical extraction or deterministic correspondence checks. A model cannot replace either human approval, and another OpenAI model does not satisfy different-vendor independence.",
     "### Current evidence",
-    "The AutoPsych repository contains 25 draft Fermi families and 10 parameterization slots per family (250 candidates total). Structural validation passes, but the roster is explicitly unreviewed.",
+    "The AutoPsych repository contains 25 draft Fermi families and 10 parameterization slots per family (250 candidates total). Structural validation passes, but the roster is explicitly unreviewed. PHY-01 has completed construction, blind different-vendor challenge, discrepancy resolution, deterministic checks, and AI-assisted source verification. Its first human review remains open because NREL's first-year/degradation wording is materially unclear; the current provisional recommendation is return for revision unless that issue is resolved.",
     "### Steps",
     "1. Open the execution repository:",
     "```",
     "cd \"/Users/julian/Documents/autopsych\"",
     "```",
     "2. Review the existing family roster and benchmark-validation instructions before drafting anything new.",
-    "3. Complete source packets, blind different-vendor challenges, deterministic arithmetic/unit checks, and the required human source-and-construct review.",
-    "4. Keep final confirmatory stems private and do not start automated Wolfram Alpha use without written licensing clearance.",
+    "3. For PHY-01, have the first human reviewer resolve the S3 first-year/degradation issue and record a decision without treating passing arithmetic as scientific validation. If retained, route it to the mandatory second human.",
+    "4. Use the official Wolfram Alpha API only for a logged, individually researcher-initiated family-level cross-check within the 2,000-query monthly non-commercial allowance. Do not automate queries or submit final stems or numerical parameters.",
     "5. Record family-level dispositions and evidence; retain P4 as In progress until every retained family clears the required gates.",
     "### Done when",
     "All 25 families have auditable benchmark packets and required reviews, 250 provisional candidate slots are accounted for, and only eligible Class A or B families remain."

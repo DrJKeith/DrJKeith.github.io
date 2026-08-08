@@ -199,7 +199,7 @@
 <div class="view" id="view-dashboard">
   <div class="grid c4" style="margin-top:6px;">
     <div class="card kpi"><div class="num" id="kpi-progress">–</div><div class="lbl">OVERALL TASKS DONE</div><div class="bar green"><div id="kpi-progress-bar" style="width:0%"></div></div></div>
-    <div class="card kpi"><div class="num" id="kpi-phase">–</div><div class="lbl">CURRENT PHASE (BY DATE)</div></div>
+    <div class="card kpi"><div class="num" id="kpi-phase">–</div><div class="lbl">CURRENT RESEARCH STAGE</div></div>
     <div class="card kpi"><div class="num" id="kpi-gates">–</div><div class="lbl">GATES PASSED</div></div>
     <div class="card kpi"><div class="num" id="kpi-budget">–</div><div class="lbl">DIRECT BUDGET REMAINING</div></div>
   </div>
@@ -235,6 +235,8 @@
   <h2>The Critical Path</h2>
   <div class="card">
     <div style="font-size:13.5px;">
+      <b>Next milestone:</b> Owner decisions <b>→</b> independent review <b>→</b> implementation <b>→</b> policy-conformance testing <b>→</b> protocol hash and sign-off.
+      <div class="note" style="margin-top:6px; margin-bottom:10px;">Protocol freeze remains in effect. No Study 0 or confirmatory Study 1 collection is authorized.</div>
       Preregister Study 0 <b>→</b> freeze model list <b>→</b> run Study 0 <b>→</b> <span style="color:var(--amber);font-weight:bold;">pass acceptance rubric (Gate 3)</span> <b>→</b> pilots <b>→</b> preregister Study 1 <b>→</b> generate items <i>after</i> filing <b>→</b> collect Track A + B <b>→</b> confirmatory analyses <b>→</b> two manuscripts + OSF release.
       <div class="note" style="margin-top:6px;">Everything downstream of Gate 3 is conditional. If the rubric returns 3/4, the 30-day remediation window starts immediately and Study 1 prep continues in parallel only where it does not depend on the failing layer.</div>
     </div>
@@ -394,6 +396,7 @@ const PHASES = [
   {id:"P1", t:"Build AutoPsych core pipeline", o:"GK", due:2, d:"Orchestration, batch submission, and the Layer D logging schema: model version string, timestamp, prompt hash, full response text, parsed values, scores, API status, and seed/system fingerprint where exposed. Done = a dry run writes complete records for 100% of mock calls."},
   {id:"P2", t:"Build parser + scorer modules", o:"GK", due:2, d:"Numeric extraction across formats (integers, decimals, scientific notation), unit conversion, refusal routing, and flagging of impossible confidences (<0, >100) and inverted intervals. Done = passes code review against the preregistered handling rules."},
   {id:"P3", t:"Create synthetic unit test library (500 items)", o:"GK", due:2, d:"Known ground-truth responses including malformed JSON, missing fields, nonnumeric text, impossible values, refusals, and adversarial formatting (Unicode, embedded instructions, whitespace). This library ships in the Study 0 preregistration."},
+  {id:"P10", t:"Approve and implement parser edge-case policy", o:"JK+GK", due:2, d:"Decision register prepared; owner approval pending. Julian must approve, reject, or amend P-01 through P-10; a second human must independently review consequential rules and representative gold labels; Gabriel then implements the approved rules. Done only after policy-conformance tests and all repository checks pass, the 90-case candidate batch is adjudicated without copying parser output into expected labels, and the policy version plus protocol, code, schema, gold-corpus, and environment hashes are recorded with sign-off. No collection before completion."},
   {id:"P4", t:"Build 25 Fermi families + 250 candidate variants", o:"JK", due:2, d:"Create 25 template families across the five registered domains and 10 provisional parameterizations per family. One AI constructs each reference-benchmark packet; a blind different-vendor AI challenges and independently recomputes it; deterministic checks verify units, arithmetic, intervals, and propagation. Use the official Wolfram Alpha API only as a logged, researcher-initiated manual family-level computational cross-check: non-commercial use is limited to 2,000 queries/month, with no caching or training on results. The Wolfram GPT is prohibited; automated bulk querying, final stems, and final numerical parameters are out of scope. A human verifies sources and construct validity for every retained family; a second human adjudicates all disagreements/high-risk families and audits a preregistered random sample of agreements. Only Class A externally checkable or Class B constructed-and-triangulated families are eligible."},
   {id:"P5", t:"Contamination-risk scoring of all candidates", o:"JK", due:2, d:"Exact-match Google + Bing searches per stem; exclude/redesign items whose top-3 results return the answer; screen canonical templates (piano tuners etc.); assign Low/Medium/High rating to every retained item. Study 1 runs are text-only and tool-disabled: browsing, web search, retrieval plugins, and other external tools are prohibited. Remember: search is a proxy, parameterization is the real defense."},
   {id:"P6", t:"Draft Study 0 preregistration", o:"JK", due:2, d:"Full acceptance rubric with thresholds, all prompt templates, concrete model and route identifiers, per-configuration route and decoding policy, the 500-item synthetic library, and all scoring procedures. Study 0 items are included verbatim (they are not contamination-sensitive)."},
@@ -463,6 +466,7 @@ const RISKS = [
  {id:"R5", name:"§7.5 Parse failures > 15% in a cell", resp:"Human-coded stratified subsample for that cell; if insufficient, exclude cell and note absence. Bounding sensitivity analysis applies regardless."},
  {id:"R6", name:"§7.6 Reasoning-token cost overrun / decoding support change", resp:"Reasoning effort pinned to minimum + logged per call; contingency covers 3x output overrun on OpenAI models; if provider removes the setting, rerun affected cells at new minimum and disclose."},
  {id:"R7", name:"§7.7 Track B accuracy above ceiling despite tuning", resp:"One re-tune + rerun per format; if still outside 55–92%, declare cell non-estimable under the preregistered rule and report as a finding."},
+ {id:"R8", name:"Unresolved parser semantics could create circular or inconsistent validation", resp:"Keep the 90-case candidate batch noncanonical. Require explicit owner decisions, independent human review of consequential rules and representative labels, implementation only after approval, and policy-conformance testing before protocol hashing or collection."},
 ];
 
 const BUDGET = [
@@ -485,23 +489,27 @@ const COUNTERS = [
 
 /* ============ STATE ============ */
 const KEY = "mp_year1_pm_v1";
-const STATE_VERSION = 3;
+const STATE_VERSION = 4;
 const RECONCILIATION_NOTE = "2026-07-31 — Preparation-task reconciliation: P1 Done (100/100 mock calls produced complete terminal records and manifests reject overwrite); P2 Done (parser/scorer reviewed against handling rules, including invalid confidence and inverted-interval rejection); P3 Done (500 deterministic synthetic cases meet the registered parser target); P4 In progress (25-family draft roster exists. PHY-01 has a frozen constructor, preserved blind Fable 5 challenge, post-freeze discrepancy resolution, passing deterministic checks, and AI-assisted source-verification guidance. S1, S2, and S4-S8 are supported with stated limits; S3 remains materially unclear because the bound NREL material mixes first-year and degradation-adjusted language. The provisional gate recommendation is return for revision unless S3 is resolved. Neither human review is complete, no Wolfram query has been made for PHY-01, numerical propagation remains blocked, and the other 24 family packets remain incomplete). Wolfram correspondence permits individually researcher-initiated, logged non-commercial API cross-checks up to 2,000 queries/month, with no caching or training; automated bulk querying, final stems, and final numerical parameters remain out of scope. Verification: locked installed-package rebuild succeeded and all 23 AutoPsych tests passed. Protocol remains draft-not-preregistered; runs=0.";
+const PROJECT_UPDATE_NOTE = "2026-08-07 — Parser-policy update: Decision register prepared; owner approval pending. A separate 90-case candidate batch remains noncanonical after 23 parser status or recovery-flag disagreements. Verified evidence reports 23/23 repository tests passing, 500/500 deterministic synthetic cases validating, and the 28/28 independent gold seed validating across all four production schemas. No parser behavior changed and no candidate cases were promoted. Required sequence: owner decisions → independent review → implementation → policy-conformance testing → protocol hash and sign-off. Protocol remains draft-not-preregistered; Study 0 has not passed; Study 0 and confirmatory Study 1 calls remain at zero and unauthorized.";
 let S = load();
 let latestExecutionRecord = null;
-function blank(){ return {stateVersion:STATE_VERSION, tasks:{P1:"done",P2:"done",P3:"done",P4:"progress"}, gates:{}, rubric:{}, budget:{}, risks:{}, counters:{}, notes:RECONCILIATION_NOTE, collapsed:{}}; }
+function blank(){ return {stateVersion:STATE_VERSION, tasks:{P1:"done",P2:"done",P3:"done",P4:"progress",P10:"progress"}, gates:{}, rubric:{}, budget:{}, risks:{R8:"triggered"}, counters:{}, notes:[RECONCILIATION_NOTE,PROJECT_UPDATE_NOTE].join("\n\n"), collapsed:{}}; }
 function normalizeState(value){
   const source=value&&typeof value==="object"?value:{};
   const previousVersion=Number(source.stateVersion)||0;
   const state=Object.assign(blank(),source);
   state.tasks=Object.assign({},source.tasks||{});
+  state.risks=Object.assign({},source.risks||{});
   let migrated=previousVersion<STATE_VERSION;
   if(migrated){
     Object.assign(state.tasks,{P1:"done",P2:"done",P3:"done"});
     if(state.tasks.P4!=="done"&&state.tasks.P4!=="blocked")state.tasks.P4="progress";
-    const existing=String(source.notes||"").trim();
-    const withoutPriorReconciliation=existing.replace(/(?:^|\n\n)\d{4}-\d{2}-\d{2} — Preparation-task reconciliation:[\s\S]*?(?=\n\n|$)/g,"").trim();
-    state.notes=[withoutPriorReconciliation,RECONCILIATION_NOTE].filter(Boolean).join("\n\n");
+    if(state.tasks.P10!=="done"&&state.tasks.P10!=="blocked")state.tasks.P10="progress";
+    state.risks.R8="triggered";
+    const existing=String(source.notes||RECONCILIATION_NOTE).trim();
+    const withoutCurrentUpdate=existing.replace(/(?:^|\n\n)2026-08-07 — Parser-policy update:[\s\S]*?(?=\n\n|$)/g,"").trim();
+    state.notes=[withoutCurrentUpdate,PROJECT_UPDATE_NOTE].filter(Boolean).join("\n\n");
   }
   state.stateVersion=STATE_VERSION;
   return {state,migrated};
@@ -642,6 +650,23 @@ function localTaskGuide(task){
     "### Done when",
     "A dry run produces complete records for 100% of intended mock calls, the evidence is logged, and the dashboard status matches that evidence."
   ].join("\n");
+  if(task.id==="P10") return [
+    "### Objective",
+    "Resolve and independently review the parser-policy decisions before any implementation or collection.",
+    "### Current evidence",
+    "The proposed register covers all four production schemas. A separate 90-case candidate batch has 23 disagreements and remains noncanonical. Existing checks pass, but they do not freeze the disputed semantics or establish that Study 0 passed.",
+    "### Steps",
+    "1. Open the execution repository:",
+    "```",
+    "cd \"/Users/julian/Documents/autopsych\"",
+    "```",
+    "2. Julian records approve, reject, or amend for P-01 through P-10, with explicit decisions on numeric suffixes, two-axis refusal representation, and recovered-response analysis.",
+    "3. A second human independently reviews the consequential rules and representative gold labels; agent agreement is not a substitute.",
+    "4. Gabriel implements only the approved rules, then audits the candidate batch without copying parser output into expected labels.",
+    "5. Run the installed-package suite, gold validator, 500-case synthetic validator, and focused policy-conformance tests. Record the policy version, hashes, approvers, review date, and unresolved issues before sign-off.",
+    "### Done when",
+    "All decisions and the independent review are recorded, implementation agrees with human-authored expectations, every required check passes, release hashes and sign-off are recorded, and collection authorization is separately confirmed."
+  ].join("\n");
   if(task.id==="P4") return [
     "### Objective",
     "Finish validation of the existing 25-family draft roster; do not recreate the roster or confuse task families with model configurations or elicitation conditions.",
@@ -772,8 +797,7 @@ function renderDashboard(){
   document.getElementById("kpi-progress-bar").style.width = (100*done/tasks.length) + "%";
 
   const cm = currentMonthIndex();
-  const cur = PHASES.filter(p=>cm>=p.m[0] && cm<=p.m[1]).map(p=>p.name).join(" + ") || (cm<1?"Pre-project":"Complete");
-  document.getElementById("kpi-phase").textContent = cur;
+  document.getElementById("kpi-phase").textContent = "Protocol freeze";
   document.getElementById("kpi-phase").style.fontSize = "17px";
 
   const gatesPassed = GATES.filter(g=> g.manual ? S.gates[g.id]==="pass" : rubricVerdict().passCount===4).length;

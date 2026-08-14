@@ -6,6 +6,7 @@
 <title>Julian R. Keith, Ph.D. | Professor of Psychology | UNCW</title>
 <meta name="description" content="Julian R. Keith, Ph.D., Professor of Psychology at the University of North Carolina Wilmington. Cognitive neuroscience, learning and memory, AI in education, and human-centered AI systems.">
 <link rel="canonical" href="https://drjkeith.github.io/">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%231b5e46'/%3E%3Ctext x='32' y='43' font-family='Georgia, serif' font-size='26' fill='white' text-anchor='middle'%3EJK%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Julian R. Keith, Ph.D. | Psychology, Cognitive Science, and AI">
 <meta property="og:description" content="Professor of Psychology at UNC Wilmington working across cognitive science, teaching, responsible AI, and custom generative AI tools.">
@@ -15,22 +16,61 @@
 <meta name="twitter:title" content="Julian R. Keith, Ph.D. | Psychology, Cognitive Science, and AI">
 <meta name="twitter:description" content="Professor of Psychology at UNC Wilmington working across cognitive science, teaching, responsible AI, and custom generative AI tools.">
 <meta name="twitter:image" content="https://drjkeith.github.io/julian-keith-hero.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Julian R. Keith",
+  "givenName": "Julian",
+  "familyName": "Keith",
+  "honorificSuffix": "Ph.D.",
+  "jobTitle": "Professor of Psychology",
+  "url": "https://drjkeith.github.io/",
+  "image": "https://drjkeith.github.io/julian-keith-portrait.png",
+  "email": "mailto:keithj@uncw.edu",
+  "telephone": "+1-910-962-3378",
+  "worksFor": {
+    "@type": "CollegeOrUniversity",
+    "name": "University of North Carolina Wilmington",
+    "sameAs": "https://uncw.edu/"
+  },
+  "affiliation": {
+    "@type": "CollegeOrUniversity",
+    "name": "University of North Carolina Wilmington"
+  },
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "University of North Carolina Wilmington" },
+    { "@type": "CollegeOrUniversity", "name": "University of Colorado Boulder" }
+  ],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=rpNc3bcAAAAJ&hl=en",
+    "https://scholars.uncw.edu/display/keithj",
+    "https://uncw.edu/profiles/k/keithj"
+  ]
+}
+</script>
 <style>
   :root{
-    --teal:#006666;
-    --teal-dark:#004f50;
-    --navy:#003366;
-    --gold:#c69214;
-    --ink:#1f2933;
-    --muted:#52616f;
-    --light:#f5f7f8;
-    --lighter:#fbfcfd;
-    --line:#d8dee4;
+    --accent:#1b5e46;
+    --accent-dark:#0e2e22;
+    --accent2:#e8734a;
+    --accent2-dark:#a4451c;
+    --ink:#1c1c1c;
+    --muted:#58605c;
+    --light:#f2f5f0;
+    --lighter:#fbfaf7;
+    --line:#e2e6e0;
     --white:#ffffff;
-    --focus:#a86f00;
-    --radius:6px;
-    --shadow:0 8px 22px rgba(15,35,52,.08);
-    --sans:Arial,"Helvetica Neue",Helvetica,sans-serif;
+    --focus:#c1440e;
+    --radius:8px;
+    --shadow:0 10px 26px rgba(18,51,38,.14);
+    --sans:'Inter',Arial,"Helvetica Neue",Helvetica,sans-serif;
+    --serif:'Newsreader',Georgia,"Times New Roman",serif;
+    --dark-bg:#123326;
+    --dark-bg-2:#0d2419;
   }
 
   *{box-sizing:border-box}
@@ -46,8 +86,8 @@
     font-size:1rem;
     line-height:1.68;
   }
-  a{color:var(--teal);font-weight:700}
-  a:hover{color:var(--navy)}
+  a{color:var(--accent);font-weight:700}
+  a:hover{color:var(--accent-dark)}
   a:focus-visible,
   button:focus-visible,
   summary:focus-visible{
@@ -59,7 +99,7 @@
     left:12px;
     top:-48px;
     z-index:999;
-    background:var(--navy);
+    background:var(--accent-dark);
     color:var(--white);
     padding:10px 14px;
     border-radius:var(--radius);
@@ -68,7 +108,7 @@
   .skip-link:focus{top:12px}
 
   .topbar{
-    background:var(--navy);
+    background:var(--dark-bg-2);
     color:var(--white);
     font-size:.95rem;
   }
@@ -107,7 +147,7 @@
     text-decoration:none;
     line-height:1.2;
   }
-  .brand strong{font-size:1.22rem}
+  .brand strong{font-size:1.22rem;font-family:var(--serif);font-weight:600}
   .brand span{font-size:.95rem;color:var(--muted);font-weight:600}
   .nav-links{
     display:flex;
@@ -124,13 +164,13 @@
     display:inline-flex;
     align-items:center;
   }
-  .nav-links a:hover{color:var(--teal)}
+  .nav-links a:hover{color:var(--accent)}
 
   .hero{
     border-bottom:1px solid var(--line);
     background:
-      linear-gradient(90deg,rgba(0,102,102,.94),rgba(0,51,102,.9)),
-      linear-gradient(135deg,var(--teal),var(--navy));
+      linear-gradient(90deg,rgba(27,94,70,.94),rgba(14,46,34,.92)),
+      linear-gradient(135deg,var(--accent),var(--accent-dark));
     color:var(--white);
   }
   .hero-inner{
@@ -138,13 +178,13 @@
     margin:0 auto;
     padding:72px 24px 64px;
     display:grid;
-    grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);
+    grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
     gap:44px;
-    align-items:center;
+    align-items:start;
   }
   .kicker{
     margin:0 0 14px;
-    color:#d9e7e7;
+    color:#d7ede1;
     font-size:.92rem;
     font-weight:700;
     letter-spacing:.12em;
@@ -153,23 +193,17 @@
   h1{
     margin:0;
     max-width:22ch;
+    font-family:var(--serif);
+    font-weight:600;
     font-size:clamp(2.5rem,4.5vw,3.8rem);
-    line-height:1.02;
+    line-height:1.05;
     letter-spacing:0;
   }
   .nowrap{white-space:nowrap}
-  .hero-logo{
-    display:block;
-    width:min(100%,240px);
-    height:auto;
-    margin:22px 0 0;
-    border-radius:var(--radius);
-    background:var(--white);
-  }
   .hero .lede{
-    max-width:62ch;
+    max-width:60ch;
     margin:24px 0 0;
-    color:#edf5f5;
+    color:#eaf5ef;
     font-size:1.28rem;
   }
   .hero-actions{
@@ -189,20 +223,30 @@
     font-weight:800;
     text-decoration:none;
   }
-  .btn-primary{background:var(--white);color:var(--navy)}
+  .btn-primary{background:var(--white);color:var(--accent)}
   .btn-secondary{border-color:rgba(255,255,255,.72);color:var(--white)}
-  .btn-primary:hover{background:#edf5f5;color:var(--navy)}
+  .btn-primary:hover{background:#eaf5ef;color:var(--accent-dark)}
   .btn-secondary:hover{background:rgba(255,255,255,.12);color:var(--white)}
-  .hero-panel{
+  .hero-visual{
     background:rgba(255,255,255,.1);
     border:1px solid rgba(255,255,255,.28);
     border-radius:var(--radius);
-    padding:24px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
   }
-  .hero-panel h2{
+  .hero-photo{
+    display:block;
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    object-position:top center;
+    background:var(--lighter);
+  }
+  .hero-roles{padding:22px}
+  .hero-roles h2{
     margin:0 0 16px;
     color:var(--white);
-    font-size:1.05rem;
+    font-size:1.02rem;
     text-transform:uppercase;
     letter-spacing:.08em;
   }
@@ -215,8 +259,8 @@
   }
   .fact-list li{
     padding-left:14px;
-    border-left:4px solid var(--gold);
-    color:#f4fbfb;
+    border-left:4px solid var(--accent2);
+    color:#f2f9f5;
   }
 
   main{background:var(--white)}
@@ -237,7 +281,7 @@
   }
   .section-label{
     margin:0 0 8px;
-    color:var(--teal-dark);
+    color:var(--accent);
     font-size:.92rem;
     font-weight:800;
     letter-spacing:.12em;
@@ -245,7 +289,9 @@
   }
   h2{
     margin:0 0 18px;
-    color:var(--navy);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-weight:600;
     font-size:clamp(2rem,3.8vw,2.85rem);
     line-height:1.15;
     letter-spacing:0;
@@ -253,6 +299,8 @@
   h3{
     margin:0 0 8px;
     color:var(--ink);
+    font-family:var(--serif);
+    font-weight:600;
     font-size:1.3rem;
     line-height:1.25;
   }
@@ -278,27 +326,12 @@
     display:grid;
     gap:18px;
   }
-  .portrait-figure{
-    margin:0;
-    width:min(100%,260px);
-  }
-  .profile-portrait{
-    display:block;
-    width:100%;
-    aspect-ratio:4/5;
-    object-fit:cover;
-    object-position:center;
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    background:var(--lighter);
-    box-shadow:var(--shadow);
-  }
   .callout{
-    border-top:5px solid var(--teal);
+    border:1px solid var(--line);
+    border-top:5px solid var(--accent);
     background:var(--lighter);
     border-radius:var(--radius);
     padding:22px;
-    box-shadow:var(--shadow);
   }
   .callout ul{
     margin:0;
@@ -314,9 +347,9 @@
   .card{
     background:var(--white);
     border:1px solid var(--line);
+    border-top:3px solid var(--accent2);
     border-radius:var(--radius);
     padding:24px;
-    box-shadow:var(--shadow);
   }
   .card p{margin:0;color:var(--muted)}
   .card p+p{margin-top:12px}
@@ -324,14 +357,22 @@
   .tag{
     display:inline-block;
     margin-bottom:12px;
-    padding:4px 9px;
-    border-left:4px solid var(--gold);
-    background:#f7f1df;
-    color:#604300;
+    padding:4px 10px;
+    border-radius:4px;
+    background:#fbe3d6;
+    color:var(--accent2-dark);
     font-size:.9rem;
     font-weight:800;
     letter-spacing:.06em;
     text-transform:uppercase;
+  }
+  .mini-label{
+    margin:0 0 8px;
+    font-size:.85rem;
+    font-weight:800;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--accent);
   }
 
   .timeline{
@@ -348,7 +389,7 @@
     border-bottom:1px solid var(--line);
   }
   .year{
-    color:var(--teal-dark);
+    color:var(--accent-dark);
     font-weight:800;
   }
   .event{color:var(--muted)}
@@ -374,7 +415,7 @@
     display:block;
     margin:0 22px 12px;
     padding-left:12px;
-    border-left:3px solid var(--gold);
+    border-left:3px solid var(--accent2);
     color:var(--muted);
     font-style:normal;
     font-size:1rem;
@@ -382,30 +423,6 @@
   .grant-list{
     list-style:none;
     margin:0;
-    padding:0;
-  }
-  .grant-toggle{
-    background:transparent;
-    border:0;
-    border-radius:0;
-    margin:0;
-  }
-  .grant-toggle summary{
-    padding:0;
-    color:var(--navy);
-  }
-  .grant-summary-heading{
-    display:inline;
-    margin:0;
-    font-size:clamp(2rem,3.8vw,2.85rem);
-    font-weight:700;
-    line-height:1.15;
-    letter-spacing:0;
-  }
-  .grant-toggle .grant-list{
-    margin-top:24px;
-  }
-  .grant-toggle p{
     padding:0;
   }
   .grant-list li{
@@ -423,9 +440,11 @@
     color:var(--muted);
     font-size:1rem;
   }
+  .grant-more .grant-list{padding:0 22px 8px}
+  .grant-more summary{color:var(--accent-dark)}
 
   .course-list{
-    margin:0;
+    margin:0 0 16px;
     padding:0;
     list-style:none;
   }
@@ -444,33 +463,32 @@
     white-space:nowrap;
   }
   .course-toggle{
-    margin-top:14px;
+    margin-top:6px;
     margin-bottom:0;
-    box-shadow:none;
   }
   .course-toggle summary{
     padding:13px 16px;
-    color:var(--teal-dark);
+    color:var(--accent-dark);
   }
   .course-toggle .course-list{
+    margin:0;
     padding:0 16px 12px;
   }
 
   .personal{
-    background:var(--navy);
+    background:var(--dark-bg);
     color:var(--white);
   }
-  .personal .section-label{color:#d9c07a}
+  .personal .section-label{color:#f3b295}
   .personal h2{color:var(--white)}
-  .personal .section-intro{color:#dce7ef}
+  .personal .section-intro{color:#dcece3}
   .personal .card{
     background:rgba(255,255,255,.08);
     border-color:rgba(255,255,255,.22);
-    box-shadow:none;
   }
   .personal .card h3{color:var(--white)}
-  .personal .card p{color:#e4edf2}
-  .personal .card a{color:#f1d88a}
+  .personal .card p{color:#e4f0e9}
+  .personal .card a{color:#f3b295}
   .personal .card a:hover{color:var(--white)}
   .card-media{
     display:block;
@@ -479,15 +497,15 @@
     margin:-24px -24px 18px;
     aspect-ratio:4/3;
     object-fit:cover;
-    border-radius:var(--radius) var(--radius) 0 0;
+    border-radius:calc(var(--radius) - 3px) calc(var(--radius) - 3px) 0 0;
   }
   .card-media-bottom{
     margin:18px -24px -24px;
-    border-radius:0 0 var(--radius) var(--radius);
+    border-radius:0 0 calc(var(--radius) - 3px) calc(var(--radius) - 3px);
   }
 
   footer{
-    background:#17212b;
+    background:var(--dark-bg-2);
     color:#dce4ea;
   }
   .footer-inner{
@@ -503,17 +521,17 @@
     font-size:1.8rem;
     margin-bottom:10px;
   }
-  footer p{margin:0;color:#dce4ea}
+  footer p{margin:0;color:#d9e6df}
   .contact-links{
     display:flex;
     flex-wrap:wrap;
     gap:12px 18px;
     margin-top:18px;
   }
-  .contact-links a{color:#f1d88a;text-decoration:none}
+  .contact-links a{color:#f3b295;text-decoration:none}
   .contact-links a:hover{color:var(--white)}
   .disclaimer{
-    color:#b8c3cb;
+    color:#a9c2b6;
     font-size:1rem;
   }
   .footer-note{margin-top:18px}
@@ -538,6 +556,7 @@
     .nav-links a{min-height:40px}
     h1{max-width:20ch}
     .hero-inner{padding-top:54px}
+    .hero-visual{max-width:320px}
     .timeline li{grid-template-columns:1fr;gap:4px}
   }
 
@@ -593,14 +612,16 @@
         <a class="btn btn-secondary" href="#contact">Contact</a>
       </div>
     </div>
-    <aside class="hero-panel" aria-label="Current roles">
-      <h2>Current Roles</h2>
-      <ul class="fact-list">
-        <li>Professor, Department of Psychology</li>
-        <li>Artificial Intelligence Strategic Lead at UNCW</li>
-        <li>Director, Generative AI Agent Builders' Studio</li>
-      </ul>
-      <img class="hero-logo" src="julian-keith-hero.png" alt="Julian R. Keith, Ph.D. Cognitive Neuroscience and AI in Education">
+    <aside class="hero-visual" aria-label="Portrait and current roles">
+      <img class="hero-photo" src="julian-keith-portrait.png" alt="Portrait of Julian R. Keith" loading="eager" fetchpriority="high">
+      <div class="hero-roles">
+        <h2>Current Roles</h2>
+        <ul class="fact-list">
+          <li>Professor, Department of Psychology</li>
+          <li>Artificial Intelligence Strategic Lead at UNCW</li>
+          <li>Director, Generative AI Agent Builders' Studio</li>
+        </ul>
+      </div>
     </aside>
   </div>
 </header>
@@ -616,10 +637,7 @@
         <p>My earlier research examined neuroplasticity, hippocampal neurogenesis, memory, cardiac surgery and cognition, neurofeedback, addiction recovery, and concussion assessment technology. My current work focuses on AI in higher education and the cognitive science of artificial systems.</p>
         <p>After seven years chairing the Department of Psychology, I returned to faculty work with new questions about cognition, learning, and human-AI collaboration.</p>
       </div>
-      <aside class="profile-aside" aria-label="Profile and professional highlights">
-        <figure class="portrait-figure">
-          <img class="profile-portrait" src="julian-keith-portrait.png" alt="Portrait of Julian R. Keith">
-        </figure>
+      <aside class="profile-aside" aria-label="Professional highlights">
         <div class="callout" aria-label="Professional highlights">
           <h3>Professional Highlights</h3>
           <ul>
@@ -667,7 +685,7 @@
     </div>
 
     <h2 class="subsection-heading">Selected earlier work</h2>
-    <details>
+    <details open>
       <summary>Neuroplasticity, neurogenesis, and memory</summary>
       <p>NIMH R01-funded work on how new neurons added to the adult hippocampus contribute to learning, memory, and recovery after brain injury, combining electrophysiology, immunohistochemistry, confocal microscopy, and behavioral analysis.</p>
       <cite>Keith, Priester, Ferguson &amp; Salling (2008). <em>Behavioural Brain Research</em>, 188, 391-397.</cite>
@@ -685,7 +703,7 @@
       <cite>Keith, Rapgay, Theodore, Schwartz &amp; Ross (2015). <em>Psychology of Addictive Behaviors</em>, 29, 17-25.</cite>
       <cite>Elbogen et al., incl. Keith (2021). <em>Pain Medicine</em>, 22, 329-337.</cite>
     </details>
-    <details>
+    <details open>
       <summary>Concussion assessment and machine learning</summary>
       <p>Validation work on accelerometer-based gait assessment and screening batteries for concussion in children, adolescents, and adults, including machine-learning models for neuropsychological research.</p>
       <cite>Keith, Williams, Taravath &amp; Lecci (2019). A Clinician's Guide to Machine Learning in Neuropsychological Research and Practice. <em>Journal of Pediatric Neuropsychology</em>, 5, 177-187.</cite>
@@ -702,14 +720,26 @@
   </section>
 
   <section id="grants">
-    <details class="grant-toggle">
-      <summary><span class="grant-summary-heading" role="heading" aria-level="2">Grant Support (click to see)</span></summary>
-
+    <p class="section-label">Grant Support</p>
+    <h2>Funded research</h2>
+    <p class="section-intro">Three decades of federally funded work as principal investigator, spanning hippocampal neurogenesis, neurofeedback, and cognitive assessment after cardiac surgery.</p>
+    <ul class="grant-list">
+      <li>
+        <p class="grant-title">Functional Aspects of Adult Hippocampal Neurogenesis</p>
+        <p class="grant-meta">NIH R01 MH067156 &middot; Keith (PI) &middot; 2003&ndash;2008</p>
+      </li>
+      <li>
+        <p class="grant-title">A Placebo-Control Evaluation of Neurofeedback Efficacy in Adults with ADHD</p>
+        <p class="grant-meta">NIH R15 AT007226-01 &middot; Keith (PI) &middot; 2012&ndash;2015</p>
+      </li>
+      <li>
+        <p class="grant-title">CPB Effects on Neuropsychological Performance</p>
+        <p class="grant-meta">NIH R15 &middot; Keith (PI) &middot; 1996&ndash;1999</p>
+      </li>
+    </ul>
+    <details class="grant-more">
+      <summary>View full grant history (5 more)</summary>
       <ul class="grant-list">
-        <li>
-          <p class="grant-title">A Placebo-Control Evaluation of Neurofeedback Efficacy in Adults with ADHD</p>
-          <p class="grant-meta">NIH R15 AT007226-01 &middot; Keith (PI) &middot; 2012&ndash;2015</p>
-        </li>
         <li>
           <p class="grant-title">The Seahawk Brainwave and Attention Training Clinic</p>
           <p class="grant-meta">Cape Fear Memorial Foundation Grant &middot; Keith (PI) &middot; 2012&ndash;2014</p>
@@ -723,20 +753,12 @@
           <p class="grant-meta">NSF &middot; Kinsey (PI), Keith (Co-I) &middot; 2005</p>
         </li>
         <li>
-          <p class="grant-title">Functional Aspects of Adult Hippocampal Neurogenesis</p>
-          <p class="grant-meta">NIH R01 MH067156 &middot; Keith (PI) &middot; 2003&ndash;2008</p>
-        </li>
-        <li>
           <p class="grant-title">Stimulating Plastic Processes to Facilitate Functional Restitution after Cortical Stroke</p>
           <p class="grant-meta">Canadian Stroke Network &middot; Sutherland (PI), Keith (Co-I) &middot; 2003&ndash;2005</p>
         </li>
         <li>
           <p class="grant-title">Drugs of Abuse and Complex Behavior</p>
           <p class="grant-meta">NIH R15 &middot; Galizio (PI), Keith (Co-I) &middot; 2000&ndash;2003</p>
-        </li>
-        <li>
-          <p class="grant-title">CPB Effects on Neuropsychological Performance</p>
-          <p class="grant-meta">NIH R15 &middot; Keith (PI) &middot; 1996&ndash;1999</p>
         </li>
       </ul>
     </details>
@@ -751,28 +773,23 @@
         <article class="card">
           <span class="tag">Graduate</span>
           <h3>Graduate Courses</h3>
-          <details class="course-toggle">
-            <summary>View past graduate courses</summary>
-            <ul class="course-list">
-              <li><span>Cognitive Psychology</span></li>
-              <li><span>Neurobiology of Learning and Memory</span></li>
-              <li><span>Memory</span></li>
-              <li><span>Professional Development</span></li>
-            </ul>
-          </details>
+          <ul class="course-list">
+            <li><span>Cognitive Psychology</span></li>
+            <li><span>Neurobiology of Learning and Memory</span></li>
+            <li><span>Memory</span></li>
+            <li><span>Professional Development</span></li>
+          </ul>
         </article>
         <article class="card">
           <span class="tag">Undergraduate</span>
           <h3>Undergraduate Courses</h3>
+          <p class="mini-label">Currently teaching</p>
+          <ul class="course-list">
+            <li><span>Experimental Psychology</span></li>
+            <li><span>Buddhism and Modern Psychology</span></li>
+          </ul>
           <details class="course-toggle">
-            <summary>View current undergraduate courses</summary>
-            <ul class="course-list">
-              <li><span>Experimental Psychology</span></li>
-              <li><span>Buddhism and Modern Psychology</span></li>
-            </ul>
-          </details>
-          <details class="course-toggle">
-            <summary>View past undergraduate courses</summary>
+            <summary>View past courses (11)</summary>
             <ul class="course-list">
               <li><span>Statistics for the Behavioral Sciences</span></li>
               <li><span>Motivation and Emotion</span></li>
@@ -884,16 +901,16 @@
           <p>On September 9, 1979, ninety-four racers waded into Banks Channel at Wrightsville Beach for one of North America's first triathlons. I was one of them. That same year I ran my first marathon, qualified for Boston as a teenager, and ran the Boston Marathon the following spring.</p>
           <p>The 1979 race and nine of its original competitors are the subject of the 2024 documentary <em>On Their First Tri</em>.</p>
           <p><a href="https://filmhub.com/t/hzrd-r36k/on-their-first-tri" target="_blank" rel="noopener">Watch the documentary</a> | <a href="https://www.imdb.com/title/tt32457891/" target="_blank" rel="noopener">View on IMDb</a></p>
-          <img class="card-media card-media-bottom" src="on-their-first-tri.png" alt="Poster for the documentary On Their First Tri">
+          <img class="card-media card-media-bottom" src="on-their-first-tri.png" alt="Poster for the documentary On Their First Tri" loading="lazy">
         </article>
         <article class="card">
-          <img class="card-media" src="noseeums.jpeg" alt="The Noseeums performing live with acoustic instruments under purple stage lights">
+          <img class="card-media" src="noseeums.jpeg" alt="The Noseeums performing live with acoustic instruments under purple stage lights" loading="lazy">
           <h3>The Noseeums</h3>
           <p>I am a member of The Noseeums, a Wilmington band playing y'allternative music around town a few times a month.</p>
           <p><a href="https://www.instagram.com/thenoseeumsband/" target="_blank" rel="noopener">Instagram</a></p>
         </article>
         <article class="card">
-          <img class="card-media" src="gabriel-keith.png" alt="Illustration for Gabriel Keith's AI agents and reinforcement learning research">
+          <img class="card-media" src="gabriel-keith.png" alt="Illustration for Gabriel Keith's AI agents and reinforcement learning research" loading="lazy">
           <h3>Gabriel Keith</h3>
           <p>My son, Gabriel Keith, studies how AI agents learn to communicate and cooperate through reinforcement learning. He is also developing efficient approaches for training LLMs on consumer hardware.</p>
           <p><a href="https://gabrielkeith.dev/" target="_blank" rel="noopener">Visit Gabriel Keith's website</a></p>
@@ -923,15 +940,5 @@
     </div>
   </div>
 </footer>
-<script>
-  const closeGrantSupport = () => {
-    document.querySelectorAll('.grant-toggle').forEach((details) => {
-      details.open = false;
-    });
-  };
-
-  closeGrantSupport();
-  window.addEventListener('pageshow', closeGrantSupport);
-</script>
 </body>
 </html>

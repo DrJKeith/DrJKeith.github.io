@@ -235,6 +235,7 @@
     box-shadow:var(--shadow);
   }
   .hero-photo{
+    height:auto;
     display:block;
     width:50%;
     margin:0 auto;
@@ -265,6 +266,19 @@
   }
 
   main{background:var(--white)}
+  [id]{scroll-margin-top:160px}
+  .featured-tools{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tool-audience{font-size:.85rem;font-weight:700;color:var(--accent) !important;margin-bottom:12px !important}
+  .tool-example{margin-top:20px;background:var(--lighter)}
+  .tool-example summary{padding:14px;font-size:.88rem}
+  .tool-example p{padding:0 14px 14px;font-size:.85rem}
+  .tool-example p+p{margin-top:0}
+  .tool-example .example-note{font-size:.78rem}
+  .access-note{font-size:.88rem;color:var(--muted);margin:24px 0}
+  .tool-library>summary{color:var(--accent-dark)}
+  .tool-library>.grid{padding:0 20px 20px}
+  @media(max-width:1000px){.featured-tools{grid-template-columns:1fr}}
+
   section{
     max-width:1200px;
     margin:0 auto;
@@ -492,6 +506,7 @@
   .personal .card a{color:#f3b295}
   .personal .card a:hover{color:var(--white)}
   .card-media{
+    height:auto;
     display:block;
     width:calc(100% + 48px);
     max-width:none;
@@ -589,12 +604,12 @@
       <span>Professor of Psychology, UNC Wilmington</span>
     </a>
     <div class="nav-links">
+      <a href="#ai">Teaching Tools</a>
       <a href="#about">About</a>
       <a href="#research">Research</a>
-      <a href="#grants">Grant Support</a>
       <a href="#teaching">Teaching</a>
-      <a href="#ai">AI Projects</a>
       <a href="#gaabs">GAABS</a>
+      <a href="#grants">Grant Support</a>
       <a href="#personal">Personal</a>
       <a href="#contact">Contact</a>
     </div>
@@ -608,18 +623,17 @@
       <h1>Julian R. Keith, <span class="nowrap">Ph.D.</span></h1>
       <p class="lede">Professor of Psychology at UNC Wilmington connecting cognitive science, teaching, and responsible AI tool-building for higher education.</p>
       <div class="hero-actions" aria-label="Key links">
-        <a class="btn btn-primary" href="https://uncw.edu/profiles/k/keithj" target="_blank" rel="noopener">UNCW Profile</a>
-        <a class="btn btn-secondary" href="https://scholar.google.com/citations?user=rpNc3bcAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a>
-        <a class="btn btn-secondary" href="#contact">Contact</a>
+        <a class="btn btn-primary" href="#ai">Try a teaching tool</a>
+        <a class="btn btn-secondary" href="mailto:keithj@uncw.edu?subject=Collaboration%20inquiry">Discuss a collaboration</a>
+        <a class="btn btn-secondary" href="https://uncw.edu/profiles/k/keithj" target="_blank" rel="noopener">UNCW Profile</a>
       </div>
     </div>
     <aside class="hero-visual" aria-label="Portrait and current roles">
-      <img class="hero-photo" src="julian-keith-portrait.png" alt="Portrait of Julian R. Keith" loading="eager" fetchpriority="high">
+      <img class="hero-photo" src="assets/julian-keith-portrait.jpg" width="520" height="574" alt="Portrait of Julian R. Keith" loading="eager" fetchpriority="high">
       <div class="hero-roles">
         <h2>Current Roles</h2>
         <ul class="fact-list">
           <li>Professor, Department of Psychology</li>
-          <li>Artificial Intelligence Strategic Lead at UNCW</li>
           <li>Director, Generative AI Agent Builders' Studio</li>
         </ul>
       </div>
@@ -628,6 +642,96 @@
 </header>
 
 <main id="main">
+  <section id="ai" aria-labelledby="tools-heading">
+    <p class="section-label">Featured teaching tools</p>
+    <h2 id="tools-heading">Plan a study. Analyze data. Practice the decisions.</h2>
+    <p class="section-intro">Three starting points for students and educators working with research methods. These custom GPTs are designed to support the reasoning behind a task.</p>
+    <div class="grid featured-tools">
+      <article class="card">
+        <span class="tag">Research Methods</span>
+        <h3>ExperiMentor</h3>
+        <p class="tool-audience">For students planning a study</p>
+        <p>Helps students turn research ideas into stronger experimental designs by clarifying hypotheses, variables, controls, and the logic of a well-built study.</p>
+        <details class="tool-example">
+          <summary>See an example task</summary>
+          <p><strong>Try asking:</strong> &ldquo;I want to study whether background music affects recall. Help me define the variables and identify a confound.&rdquo;</p>
+          <p><strong>Illustrative response:</strong> Compare a music condition with a quiet condition, use the same recall task, and consider how music preference could affect the comparison.</p>
+          <p class="example-note">Written to illustrate the task; not a recorded tool response. Actual responses vary.</p>
+        </details>
+        <p><a href="https://chatgpt.com/g/g-67dad24574048191b5615d9d4f996c76-experimentor" target="_blank" rel="noopener">Open ExperiMentor on ChatGPT</a></p>
+      </article>
+      <article class="card">
+        <span class="tag">Statistics</span>
+        <h3>Jamovi Stats Coach</h3>
+        <p class="tool-audience">For students learning statistics</p>
+        <p>Guides students through choosing, running, and interpreting analyses in jamovi, from t-tests to regression.</p>
+        <details class="tool-example">
+          <summary>See an example task</summary>
+          <p><strong>Try asking:</strong> &ldquo;I have recall scores from two independent groups. What should I check before choosing an analysis in jamovi?&rdquo;</p>
+          <p><strong>Illustrative response:</strong> Identify the outcome and group variable, inspect the distributions, and check whether the assumptions of the proposed analysis fit the design.</p>
+          <p class="example-note">Written to illustrate the task; not a recorded tool response. Actual responses vary.</p>
+        </details>
+        <p><a href="https://chatgpt.com/g/g-69960f40b3d881918b40b9cf1409f5f2-jamovi-stats-coach" target="_blank" rel="noopener">Open Jamovi Stats Coach on ChatGPT</a></p>
+      </article>
+      <article class="card">
+        <span class="tag">Lab Simulation</span>
+        <h3>LabSim GPT</h3>
+        <p class="tool-audience">For students practicing research decisions</p>
+        <p>Creates simulated lab experiences so students can practice research decisions, measurement, and interpretation when they cannot be at the bench.</p>
+        <details class="tool-example">
+          <summary>See an example task</summary>
+          <p><strong>Try asking:</strong> &ldquo;Walk me through a simulated memory experiment. Let me choose the design before showing me simulated results.&rdquo;</p>
+          <p><strong>Illustrative response:</strong> Choose conditions and a measurement strategy, examine simulated observations, and explain what the design allows you to conclude.</p>
+          <p class="example-note">Written to illustrate the task; not a recorded tool response. Actual responses vary.</p>
+        </details>
+        <p><a href="https://chatgpt.com/g/g-683093e0fca4819185c6ee044a7185e9-labsim-gpt" target="_blank" rel="noopener">Open LabSim GPT on ChatGPT</a></p>
+      </article>
+    </div>
+    <p class="access-note">These tools open in ChatGPT. Sign-in may be required; access depends on your account. Check generated guidance against your course materials and study design.</p>
+    <details class="tool-library">
+      <summary>Explore six more tools for learning, communication, and AI literacy</summary>
+      <div class="grid">
+      <article class="card">
+        <span class="tag">Course Companion</span>
+        <h3>Mindful Mentor</h3>
+        <p>Supports the Buddhism and Modern Psychology course by helping students connect Buddhist psychology, contemplative practice, and cognitive science.</p>
+        <p><a href="https://chatgpt.com/g/g-680bfa73c0f0819181f4dc9a204a835e-mindful-mentor" target="_blank" rel="noopener">Open Mindful Mentor on ChatGPT</a></p>
+      </article>
+      <article class="card">
+        <span class="tag">Communication</span>
+        <h3>SuperCommunicators</h3>
+        <p>Helps users practice listening, asking better questions, and matching their response to the conversation they are actually in.</p>
+        <p><a href="https://chatgpt.com/g/g-696ac7afe9e481918b0f50dd6e9f2def-supercommunicators" target="_blank" rel="noopener">Open SuperCommunicators on ChatGPT</a></p>
+      </article>
+      <article class="card">
+        <span class="tag">AI Literacy</span>
+        <h3>Human Wisdom for the Age of AI</h3>
+        <p>Extends Elon University's <em>Human Wisdom for the Age of AI</em> with a companion GPT built with Elon's permission.</p>
+        <p><a href="https://chatgpt.com/g/g-6a24b703cb048191a3c240f203c07ede-human-wisdom-for-the-age-of-ai" target="_blank" rel="noopener">Open Human Wisdom for the Age of AI on ChatGPT</a></p>
+      </article>
+      <article class="card">
+        <span class="tag">AI Builder Coach</span>
+        <h3>Agent Smith</h3>
+        <p>Coaches students, faculty, staff, and administrators through designing useful custom AI assistants across ChatGPT, Gemini, Claude, and Microsoft Copilot.</p>
+        <p><a href="https://chatgpt.com/g/g-69a0481816688191a82fddbf63819f7c-agent-smith-gpt-agent-builder-tutor" target="_blank" rel="noopener">Open Agent Smith on ChatGPT</a></p>
+      </article>
+      <article class="card">
+        <span class="tag">Critical Thinking</span>
+        <h3>Current Event Conversations</h3>
+        <p>Helps users examine questions, ideas, and current events through context, inquiry, and competing interpretations rather than quick conclusions.</p>
+        <p><a href="https://chatgpt.com/g/g-68f03cdbdda8819188338face9858077-current-event-conversations" target="_blank" rel="noopener">Open Current Event Conversations on ChatGPT</a></p>
+      </article>
+      <article class="card">
+        <span class="tag">AI Literacy</span>
+        <h3>Thinking About AI</h3>
+        <p>A guide for making sense of AI without hype or panic. It helps users distinguish evidence from possibility, prediction, and argument while examining AI&rsquo;s effects on learning, work, privacy, democracy, human agency, and risk.</p>
+        <p><a href="https://chatgpt.com/g/g-6a7e49a8aacc81918830317f3e1cac19-thinking-about-ai" target="_blank" rel="noopener">Open Thinking About AI on ChatGPT</a></p>
+      </article>
+      </div>
+    </details>
+  </section>
+
+
   <section id="about">
     <p class="section-label">About</p>
     <h2>Research, teaching, and institutional AI work</h2>
@@ -650,21 +754,6 @@
           </ul>
         </div>
       </aside>
-    </div>
-  </section>
-
-  <section class="band" aria-labelledby="timeline-heading">
-    <div class="band-inner">
-      <p class="section-label">Career Timeline</p>
-      <h2 id="timeline-heading">Selected milestones</h2>
-      <ol class="timeline">
-        <li><span class="year">1983</span><span class="event">B.A., Psychology and Philosophy &amp; Religion, UNC Wilmington</span></li>
-        <li><span class="year">1990</span><span class="event">Ph.D., Psychology, University of Colorado Boulder; joined the UNCW faculty</span></li>
-        <li><span class="year">2003-08</span><span class="event">NIMH R01: Functional Aspects of Adult Hippocampal Neurogenesis</span></li>
-        <li><span class="year">2015</span><span class="event">UNCW Distinguished Teaching Professorship and Board of Trustees Teaching Excellence Award</span></li>
-        <li><span class="year">2015-2022</span><span class="event">Chair, Department of Psychology, UNCW</span></li>
-        <li><span class="year">Now</span><span class="event">AI Strategic Lead at UNCW; Director, Generative AI Agent Builders' Studio</span></li>
-      </ol>
     </div>
   </section>
 
@@ -720,51 +809,6 @@
     <p><a href="https://scholar.google.com/citations?user=rpNc3bcAAAAJ&amp;hl=en" target="_blank" rel="noopener">View full publication record on Google Scholar</a></p>
   </section>
 
-  <section id="grants">
-    <p class="section-label">Grant Support</p>
-    <h2>Funded research</h2>
-    <p class="section-intro">Three decades of federally funded work as principal investigator, spanning hippocampal neurogenesis, neurofeedback, and cognitive assessment after cardiac surgery.</p>
-    <ul class="grant-list">
-      <li>
-        <p class="grant-title">Functional Aspects of Adult Hippocampal Neurogenesis</p>
-        <p class="grant-meta">NIH R01 MH067156 &middot; Keith (PI) &middot; 2003&ndash;2008</p>
-      </li>
-      <li>
-        <p class="grant-title">A Placebo-Control Evaluation of Neurofeedback Efficacy in Adults with ADHD</p>
-        <p class="grant-meta">NIH R15 AT007226-01 &middot; Keith (PI) &middot; 2012&ndash;2015</p>
-      </li>
-      <li>
-        <p class="grant-title">CPB Effects on Neuropsychological Performance</p>
-        <p class="grant-meta">NIH R15 &middot; Keith (PI) &middot; 1996&ndash;1999</p>
-      </li>
-    </ul>
-    <details class="grant-more">
-      <summary>View full grant history (5 more)</summary>
-      <ul class="grant-list">
-        <li>
-          <p class="grant-title">The Seahawk Brainwave and Attention Training Clinic</p>
-          <p class="grant-meta">Cape Fear Memorial Foundation Grant &middot; Keith (PI) &middot; 2012&ndash;2014</p>
-        </li>
-        <li>
-          <p class="grant-title">A New Approach at Identifying Patterns of Cognitive Decline in Patients with Dementia of the Alzheimer&rsquo;s Type</p>
-          <p class="grant-meta">Alzheimer&rsquo;s North Carolina (AlzNC) &middot; Keith (PI) &middot; 2012&ndash;2013</p>
-        </li>
-        <li>
-          <p class="grant-title">Proposal to obtain laser scanning confocal microscope</p>
-          <p class="grant-meta">NSF &middot; Kinsey (PI), Keith (Co-I) &middot; 2005</p>
-        </li>
-        <li>
-          <p class="grant-title">Stimulating Plastic Processes to Facilitate Functional Restitution after Cortical Stroke</p>
-          <p class="grant-meta">Canadian Stroke Network &middot; Sutherland (PI), Keith (Co-I) &middot; 2003&ndash;2005</p>
-        </li>
-        <li>
-          <p class="grant-title">Drugs of Abuse and Complex Behavior</p>
-          <p class="grant-meta">NIH R15 &middot; Galizio (PI), Keith (Co-I) &middot; 2000&ndash;2003</p>
-        </li>
-      </ul>
-    </details>
-  </section>
-
   <section class="band" id="teaching">
     <div class="band-inner">
       <p class="section-label">Teaching</p>
@@ -815,86 +859,72 @@
     </div>
   </section>
 
-  <section id="ai">
-    <p class="section-label">AI Projects</p>
-    <h2>Selected AI Tools</h2>
-    <p class="section-intro">Custom GPTs built for teaching, research support, AI literacy, and practical agent design. Each tool is meant to help users think through a task, not simply outsource it.</p>
-    <div class="grid">
-      <article class="card">
-        <span class="tag">Research Methods</span>
-        <h3>ExperiMentor</h3>
-        <p>Helps students turn research ideas into stronger experimental designs by clarifying hypotheses, variables, controls, and the logic of a well-built study.</p>
-        <p><a href="https://chatgpt.com/g/g-67dad24574048191b5615d9d4f996c76-experimentor" target="_blank" rel="noopener">Open ExperiMentor on ChatGPT</a></p>
-      </article>
-      <article class="card">
-        <span class="tag">Statistics</span>
-        <h3>Jamovi Stats Coach</h3>
-        <p>Guides students through choosing, running, and interpreting analyses in jamovi, from t-tests to regression.</p>
-        <p><a href="https://chatgpt.com/g/g-69960f40b3d881918b40b9cf1409f5f2-jamovi-stats-coach" target="_blank" rel="noopener">Open Jamovi Stats Coach on ChatGPT</a></p>
-      </article>
-      <article class="card">
-        <span class="tag">Lab Simulation</span>
-        <h3>LabSim GPT</h3>
-        <p>Creates simulated lab experiences so students can practice research decisions, measurement, and interpretation when they cannot be at the bench.</p>
-        <p><a href="https://chatgpt.com/g/g-683093e0fca4819185c6ee044a7185e9-labsim-gpt" target="_blank" rel="noopener">Open LabSim GPT on ChatGPT</a></p>
-      </article>
-      <article class="card">
-        <span class="tag">Course Companion</span>
-        <h3>Mindful Mentor</h3>
-        <p>Supports the Buddhism and Modern Psychology course by helping students connect Buddhist psychology, contemplative practice, and cognitive science.</p>
-        <p><a href="https://chatgpt.com/g/g-680bfa73c0f0819181f4dc9a204a835e-mindful-mentor" target="_blank" rel="noopener">Open Mindful Mentor on ChatGPT</a></p>
-      </article>
-      <article class="card">
-        <span class="tag">Communication</span>
-        <h3>SuperCommunicators</h3>
-        <p>Helps users practice listening, asking better questions, and matching their response to the conversation they are actually in.</p>
-        <p><a href="https://chatgpt.com/g/g-696ac7afe9e481918b0f50dd6e9f2def-supercommunicators" target="_blank" rel="noopener">Open SuperCommunicators on ChatGPT</a></p>
-      </article>
-      <article class="card">
-        <span class="tag">AI Literacy</span>
-        <h3>Human Wisdom for the Age of AI</h3>
-        <p>Extends Elon University's <em>Human Wisdom for the Age of AI</em> with a companion GPT built with Elon's permission.</p>
-        <p><a href="https://chatgpt.com/g/g-6a24b703cb048191a3c240f203c07ede-human-wisdom-for-the-age-of-ai" target="_blank" rel="noopener">Open Human Wisdom for the Age of AI on ChatGPT</a></p>
-      </article>
-      <article class="card">
-        <span class="tag">AI Builder Coach</span>
-        <h3>Agent Smith</h3>
-        <p>Coaches students, faculty, staff, and administrators through designing useful custom AI assistants across ChatGPT, Gemini, Claude, and Microsoft Copilot.</p>
-        <p><a href="https://chatgpt.com/g/g-69a0481816688191a82fddbf63819f7c-agent-smith-gpt-agent-builder-tutor" target="_blank" rel="noopener">Open Agent Smith on ChatGPT</a></p>
-      </article>
-      <article class="card">
-        <span class="tag">Critical Thinking</span>
-        <h3>Current Event Conversations</h3>
-        <p>Helps users examine questions, ideas, and current events through context, inquiry, and competing interpretations rather than quick conclusions.</p>
-        <p><a href="https://chatgpt.com/g/g-68f03cdbdda8819188338face9858077-current-event-conversations" target="_blank" rel="noopener">Open Current Event Conversations on ChatGPT</a></p>
-      </article>
-      <article class="card">
-        <span class="tag">AI Literacy</span>
-        <h3>Thinking About AI</h3>
-        <p>A guide for making sense of AI without hype or panic. It helps users distinguish evidence from possibility, prediction, and argument while examining AI&rsquo;s effects on learning, work, privacy, democracy, human agency, and risk.</p>
-        <p><a href="https://chatgpt.com/g/g-6a7e49a8aacc81918830317f3e1cac19-thinking-about-ai" target="_blank" rel="noopener">Open Thinking About AI on ChatGPT</a></p>
-      </article>
-    </div>
-  </section>
-
   <section class="band" id="gaabs">
     <div class="band-inner">
       <p class="section-label">GAABS</p>
       <h2>Generative AI Agent Builders Studio</h2>
       <p class="section-intro">GAABS, the Generative AI Agent Builders Studio, is the applied tool-building arm of UNCW's AI Hub. GAABS helps faculty, staff, and students turn responsible AI ideas into practical tools, workflows, agents, and learning resources that support teaching, research, operations, and student success.</p>
-      <div class="two-col">
-        <article class="card">
-          <span class="tag">Who It Serves</span>
-          <h3>UNCW builders and collaborators</h3>
-          <p>GAABS is for members of the UNCW community who want to build, test, document, or share useful AI projects within appropriate policy, privacy, and data-use boundaries.</p>
-        </article>
-        <article class="card">
-          <span class="tag">Participate</span>
-          <h3>Share a use case or project idea</h3>
-          <p>To participate, share a use case, submit a project idea, join a buildathon, or ask about collaboration by emailing <a href="mailto:gaabs@uncw.edu">gaabs@uncw.edu</a>.</p>
-        </article>
-      </div>
     </div>
+  </section>
+
+  <section class="band" aria-labelledby="timeline-heading">
+    <div class="band-inner">
+      <p class="section-label">Career Timeline</p>
+      <h2 id="timeline-heading">Selected milestones</h2>
+      <ol class="timeline">
+        <li><span class="year">1983</span><span class="event">B.A., Psychology and Philosophy &amp; Religion, UNC Wilmington</span></li>
+        <li><span class="year">1990</span><span class="event">Ph.D., Psychology, University of Colorado Boulder; joined the UNCW faculty</span></li>
+        <li><span class="year">2003-08</span><span class="event">NIMH R01: Functional Aspects of Adult Hippocampal Neurogenesis</span></li>
+        <li><span class="year">2015</span><span class="event">UNCW Distinguished Teaching Professorship and Board of Trustees Teaching Excellence Award</span></li>
+        <li><span class="year">2015-2022</span><span class="event">Chair, Department of Psychology, UNCW</span></li>
+        <li><span class="year">Now</span><span class="event">Director, Generative AI Agent Builders' Studio</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="grants">
+    <p class="section-label">Grant Support</p>
+    <h2>Funded research</h2>
+    <p class="section-intro">Three decades of federally funded work as principal investigator, spanning hippocampal neurogenesis, neurofeedback, and cognitive assessment after cardiac surgery.</p>
+    <ul class="grant-list">
+      <li>
+        <p class="grant-title">Functional Aspects of Adult Hippocampal Neurogenesis</p>
+        <p class="grant-meta">NIH R01 MH067156 &middot; Keith (PI) &middot; 2003&ndash;2008</p>
+      </li>
+      <li>
+        <p class="grant-title">A Placebo-Control Evaluation of Neurofeedback Efficacy in Adults with ADHD</p>
+        <p class="grant-meta">NIH R15 AT007226-01 &middot; Keith (PI) &middot; 2012&ndash;2015</p>
+      </li>
+      <li>
+        <p class="grant-title">CPB Effects on Neuropsychological Performance</p>
+        <p class="grant-meta">NIH R15 &middot; Keith (PI) &middot; 1996&ndash;1999</p>
+      </li>
+    </ul>
+    <details class="grant-more">
+      <summary>View full grant history (5 more)</summary>
+      <ul class="grant-list">
+        <li>
+          <p class="grant-title">The Seahawk Brainwave and Attention Training Clinic</p>
+          <p class="grant-meta">Cape Fear Memorial Foundation Grant &middot; Keith (PI) &middot; 2012&ndash;2014</p>
+        </li>
+        <li>
+          <p class="grant-title">A New Approach at Identifying Patterns of Cognitive Decline in Patients with Dementia of the Alzheimer&rsquo;s Type</p>
+          <p class="grant-meta">Alzheimer&rsquo;s North Carolina (AlzNC) &middot; Keith (PI) &middot; 2012&ndash;2013</p>
+        </li>
+        <li>
+          <p class="grant-title">Proposal to obtain laser scanning confocal microscope</p>
+          <p class="grant-meta">NSF &middot; Kinsey (PI), Keith (Co-I) &middot; 2005</p>
+        </li>
+        <li>
+          <p class="grant-title">Stimulating Plastic Processes to Facilitate Functional Restitution after Cortical Stroke</p>
+          <p class="grant-meta">Canadian Stroke Network &middot; Sutherland (PI), Keith (Co-I) &middot; 2003&ndash;2005</p>
+        </li>
+        <li>
+          <p class="grant-title">Drugs of Abuse and Complex Behavior</p>
+          <p class="grant-meta">NIH R15 &middot; Galizio (PI), Keith (Co-I) &middot; 2000&ndash;2003</p>
+        </li>
+      </ul>
+    </details>
   </section>
 
   <section class="personal" id="personal">
@@ -908,7 +938,7 @@
           <p>On September 9, 1979, ninety-four racers waded into Banks Channel at Wrightsville Beach for one of North America's first triathlons. I was one of them. That same year I ran my first marathon, qualified for Boston as a teenager, and ran the Boston Marathon the following spring.</p>
           <p>The 1979 race and nine of its original competitors are the subject of the 2024 documentary <em>On Their First Tri</em>.</p>
           <p><a href="https://filmhub.com/t/hzrd-r36k/on-their-first-tri" target="_blank" rel="noopener">Watch the documentary</a> | <a href="https://www.imdb.com/title/tt32457891/" target="_blank" rel="noopener">View on IMDb</a></p>
-          <img class="card-media card-media-bottom" src="on-their-first-tri.png" alt="Poster for the documentary On Their First Tri" loading="lazy">
+          <img class="card-media card-media-bottom" src="assets/on-their-first-tri.jpg" width="718" height="1024" alt="Poster for the documentary On Their First Tri" loading="lazy">
         </article>
         <article class="card">
           <img class="card-media" src="noseeums.jpeg" alt="The Noseeums performing live with acoustic instruments under purple stage lights" loading="lazy">
@@ -917,7 +947,7 @@
           <p><a href="https://www.instagram.com/thenoseeumsband/" target="_blank" rel="noopener">Instagram</a></p>
         </article>
         <article class="card">
-          <img class="card-media" src="gabriel-keith.png" alt="Illustration for Gabriel Keith's AI agents and reinforcement learning research" loading="lazy">
+          <img class="card-media" src="assets/gabriel-keith.jpg" width="768" height="960" alt="Illustration for Gabriel Keith's AI agents and reinforcement learning research" loading="lazy">
           <h3>Gabriel Keith</h3>
           <p>My son, Gabriel Keith, studies how AI agents learn to communicate and cooperate through reinforcement learning. He is also developing efficient approaches for training LLMs on consumer hardware.</p>
           <p><a href="https://gabrielkeith.dev/" target="_blank" rel="noopener">Visit Gabriel Keith's website</a></p>
